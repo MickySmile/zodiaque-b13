@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import ast
 import importlib
+import subprocess
+import sys
 import tomllib
 from pathlib import Path
 
@@ -64,6 +66,27 @@ def test_socle_api_sans_page_servie_par_un_tiers() -> None:
 
     assert app.docs_url is None
     assert app.redoc_url is None
+
+
+SCRIPTS = sorted(p for p in (RACINE / "scripts").glob("*.py") if not p.name.startswith("_"))
+
+
+@pytest.mark.parametrize("script", SCRIPTS, ids=lambda p: p.name)
+def test_socle_script_lancable_par_son_chemin(script: Path, tmp_path: Path) -> None:
+    """Décision 0007 : lancé par son chemin, depuis un autre dossier, un script trouve ses imports.
+
+    `scripts/verifier.sh` lance les scripts ainsi ; `moteur` n'étant pas installé, un script qui
+    l'importe doit ajouter lui-même la racine du dépôt à son chemin.
+    """
+    resultat = subprocess.run(
+        [sys.executable, str(script), "--help"],
+        cwd=tmp_path,
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+    assert resultat.returncode == 0, resultat.stderr
 
 
 def test_socle_marqueur_donnees_declare(pytestconfig: pytest.Config) -> None:
