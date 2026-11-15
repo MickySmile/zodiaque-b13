@@ -37,7 +37,7 @@ Lis le journal en bas de docs/PLAN.md et git log -5. Résume où on en est en tr
 **Raccourcis de travail** : `/exigence FR-07` · `/fiche-signe Taureau` · `/ecran saisie` · `/donnees` · `/frontieres` · « vérifie » (skill `verify`)
 
 ## Phase 0 · Socle
-- [ ] Objectif : dépôt sous Git, kit en place, Claude Code à jour, CLAUDE.md chargé.
+- [x] Objectif : dépôt sous Git, kit en place, Claude Code à jour, CLAUDE.md chargé.
 - Actions : **Micky** : étapes « Avant la première session » ; créer un dépôt GitHub privé `zodiaque-b13`, `git remote add origin …`. Claude : `git add -A` et premier commit `phase 0 : kit v1.0` (le hook pre-commit tourne) ; **Micky** : `git push -u origin main` puis vérifier que l'action « Vérifier » passe sur GitHub.
 - Contrôle : `claude --version` ; `jq --version` ; `uv --version` ; `node --version` ; `pre-commit --version` ; `/context` ; `scripts/verifier.sh`.
 - Critère de passage : version ≥ 2.1.286 ; CLAUDE.md listé dans les fichiers de mémoire, sous 200 lignes ; `verifier.sh` au vert (étapes Python et Front « sans objet ») ; CI verte sur GitHub.
@@ -139,3 +139,4 @@ Référentiel Claude Code du projet daté du 9/10/2026 ; faits revérifiés sur 
 | Date | Phase | Résultat | Écarts |
 | --- | --- | --- | --- |
 | 15/11/2026 | Conception | Kit v1.0 livré depuis le projet claude.ai « Meta-Claude-Code-Projects » | Voir `docs/conception.md` |
+| 15/11/2026 | 0 · Socle | Critère atteint : Claude Code 2.1.311, jq 1.7.1, uv 0.13.8, node 22.14.0, pre-commit 4.7.0 ; CLAUDE.md chargé, 44 lignes ; `verifier.sh` au vert (Python, Frontières et Front « sans objet ») ; commit `d15ec53` poussé sur `MickySmile/zodiaque-b13` ; action « Vérifier » verte en 13 s (`checkout@v4`, `setup-uv@v6` acceptées ; `setup-node@v4` sautée faute de `web/package-lock.json`, à revoir en phase 2) | 1. Sandbox : écriture dans `.git` refusée à Claude dans la session ouverte avant `git init` ; commit et push faits par Micky ; à revérifier dans une nouvelle session (phase 1). 2. `garde-fou.sh` : deux faux positifs sur des lectures (chemin du hook Git cité ; `tail -n` près du mot « commit »), à examiner en phase 1. 3. Planches exportées en @2x et renommées par Claude selon `docs/design/README.md` ; planches 6 et 7 plus hautes qu'annoncé (1280 × 1479 et 1440 × 1397 à 1x). 4. Push : SSH refusé (aucune clé), passage en HTTPS avec `gh` ; `http.postBuffer` porté à 100 Mio après un HTTP 400 ; `gh` est dans `~/.local/bin`, hors du PATH du terminal de Micky. 5. Homebrew ne fournit plus de binaires pour Mac Intel : pre-commit compilé depuis les sources. 6. Mode auto non vérifié par Claude |
