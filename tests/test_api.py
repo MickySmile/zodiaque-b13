@@ -24,7 +24,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from api import main
-from moteur import MODEL_ID, natal, passages, places
+from moteur import MODEL_ID, natal, passages, places, referentiel
 from moteur.boundaries import EXPECTED_ORDER
 from moteur.civil_time import BirthInput, load_zone
 from moteur.classification import ClassificationError
@@ -123,21 +123,71 @@ def test_api_boundaries_invent_no_angle_house_or_aspect() -> None:
     }
 
 
-def test_fr_18_sheets_carry_status_and_manifest_and_no_invented_text() -> None:
+def test_fr_18_sheets_carry_status_manifest_and_ruleset_version() -> None:
     response = client.get("/api/signs")
     assert response.status_code == 200
     body = response.json()
     assert body["data_status"] == "candidate"
     assert body["manifest"]["model_id"] == MODEL_ID
-    assert body["manifest"]["symbolic_ruleset_version"] is None
+    version = (ROOT / "referentiel/VERSION").read_text(encoding="utf-8").strip()
+    assert body["ruleset_version"] == body["manifest"]["symbolic_ruleset_version"] == version
+    recorded = (ROOT / "referentiel/EMPREINTE").read_text(encoding="utf-8").split()
+    assert [body["ruleset_version"], body["ruleset_sha256"]] == recorded
+    assert set(body["rules"]) == {
+        "schema_version",
+        "common_rules",
+        "general_policy",
+        "inherited_categories_decision",
+        "historical_heritage",
+    }
     assert [sheet["sign_id"] for sheet in body["signs"]] == [
         sign["sign_id"] for sign in client.get("/api/boundaries").json()["signs"]
     ]
     for sheet in body["signs"]:
-        # Le référentiel n'est pas encore transcrit : la fiche est absente, pas rédigée.
-        assert sheet["sheet"] is None
-        assert sheet["sheet_status"] == "not_transcribed"
+        # Toute fiche est une proposition symbolique, jamais une mesure.
+        assert sheet["sheet_status"] == "transcribed"
         assert sheet["epistemic_status"] == "symbolic_proposal"
+
+
+def test_fr_15_sheets_are_the_referentiel_unchanged_and_share_one_shape() -> None:
+    body = client.get("/api/signs").json()
+    symbolic = referentiel.load()
+    assert len(body["signs"]) == 13
+    assert len({tuple(sorted(sheet)) for sheet in body["signs"]}) == 1
+    assert len({tuple(sorted(sheet["sheet"])) for sheet in body["signs"]}) == 1
+    for sheet in body["signs"]:
+        expected = symbolic.sheet(sheet["sign_id"])
+        assert sheet["sheet"] == json.loads(expected.model_dump_json())
+        assert sheet["missing"] == list(expected.missing())
+        assert sheet["name"] == sheet["sheet"]["name"]
+        assert sheet["sheet"]["historical_correspondences"]["active"] is False
+    serpentaire = next(sheet for sheet in body["signs"] if sheet["sign_id"] == "Oph")
+    assert serpentaire["sheet"]["archetype"]["text"] == "Le praticien qui reste apprenant"
+    assert serpentaire["sheet"]["archetype"]["provenance"] == ["C"]
+    assert serpentaire["missing"] == []
+
+
+def test_fr_15_a_rubric_the_prd_leaves_empty_stays_null_with_its_status() -> None:
+    body = client.get("/api/signs").json()
+    taurus = next(sheet for sheet in body["signs"] if sheet["sign_id"] == "Tau")
+    assert taurus["missing"] == ["archetype", "resources", "forbidden_inferences"]
+    for name in taurus["missing"]:
+        entry = taurus["sheet"][name]
+        assert entry["status"] == "missing"
+        assert entry["text"] is None and entry["items"] is None and entry["table"] is None
+
+
+def test_api_invalid_referentiel_gives_no_sheet_and_no_trace(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    def broken() -> None:
+        raise referentiel.ReferentielError(f"fiche hors schéma {WITNESS}")
+
+    monkeypatch.setattr(referentiel, "load_canonical", broken)
+    response = client.get("/api/signs")
+    assert response.status_code == 500
+    assert error_of(response)["code"] == "calculation_stopped"
+    assert WITNESS not in response.text
 
 
 def test_api_schema_is_generated_and_lists_the_routes() -> None:

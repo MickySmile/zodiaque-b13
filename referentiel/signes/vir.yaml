@@ -1,0 +1,104 @@
+# Fiche B13 — Vierge (Vir).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Vir
+name: Vierge
+operation:
+  status: transcribed
+  text: Ajuster
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Contrôler sans fin, corriger sans consentement, oublier la finalité
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Quelle correction apporte réellement quelque chose ici ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Analyse, utilité, méthode, service, soin
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Ajuster : rendre une pratique adaptée à son usage'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Discernement et soin conservés. Le Serpentaire reçoit un autre angle sur l'intervention, pas le
+    monopole du soin
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Discernement, méthode, vérification, service, attention au détail pertinent
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: La correction vise l'adéquation à un usage, pas la perfection ou la pureté
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Distinguer ce qui fonctionne, ce qui manque, ce qui doit être ajusté
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Jeune femme à l'épi (Spica) ; Justice, Déméter, Érigoné ; domicile et exaltation de Mercure
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Soin, connaissance et aide avec le Serpentaire
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: 'La première formulation était trop étroite : la Vierge peut aussi interroger les limites d''une
+    méthode'
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: Le discernement ne dépend plus d'une maîtrise ou exaltation de Mercure
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Terre
+  modality: mutable
+  domicile: Mercure
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

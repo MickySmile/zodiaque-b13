@@ -7,6 +7,7 @@ import type {
   BirthRequest,
   Calendar,
   PlaceSearch,
+  Signs,
   SunSignResult,
   TimezoneLookup,
   WheelData,
@@ -67,6 +68,7 @@ async function call<T>(path: string, body?: unknown): Promise<T> {
 
 export const api = {
   boundaries: () => call<WheelData>('/api/boundaries'),
+  signs: () => call<Signs>('/api/signs'),
   sunSign: (birth: BirthRequest) => call<SunSignResult>('/api/sun-sign', birth),
   /** L'année consultée n'est pas une donnée de naissance : elle peut figurer dans l'adresse. */
   calendar: (year: number) => call<Calendar>(`/api/calendar/${year}`),

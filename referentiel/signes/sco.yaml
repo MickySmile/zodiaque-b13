@@ -1,0 +1,104 @@
+# Fiche B13 — Scorpion (Sco).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Sco
+name: Scorpion
+operation:
+  status: transcribed
+  text: Mettre au jour et traverser
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Soupçon, emprise, crise recherchée pour elle-même
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Quel attachement ou rapport de pouvoir rend cette situation difficile à transformer ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Intensité, secret, pouvoir, transformation, régénération
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Mettre au jour et traverser : transformer un arrangement devenu intenable'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Transformation conservée. Abandon de sa réduction à la mort ou à une supériorité initiatique
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Intensité, intimité, enquête, rapports de pouvoir, transformation, régénération
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: 'Régénérer : réorganiser ce qui peut vivre après la défaite d''un arrangement, sans devenir «
+    supérieur »'
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Rencontrer ce qu'on ne peut plus maintenir sous sa forme actuelle
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Le scorpion qui menace Orion (limite opposée à une puissance) ; Mars ancien, Pluton moderne
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Transformation et limites avec le Serpentaire
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: Aucune raison de lui retirer la régénération ; cesser d'utiliser « transformation » comme étiquette
+    universelle
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: Transformation et intensité restent ; ni Mars ni Pluton ne gouvernent le signe
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Eau
+  modality: fixe
+  domicile: Mars
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

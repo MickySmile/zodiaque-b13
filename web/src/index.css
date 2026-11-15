@@ -83,6 +83,16 @@ h2 {
   left: -999rem;
 }
 
+/* Texte réservé aux lecteurs d'écran : il dit ce qu'un signe graphique montre. */
+.lecteur {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .evitement:focus {
   left: 1rem;
   top: 1rem;
@@ -576,20 +586,6 @@ table {
   font-weight: 600;
 }
 
-th:last-child,
-td:last-child {
-  padding-right: 0;
-}
-
-/* Petit écran : cellules resserrées, pour que le tableau des 13 signes tienne dans sa carte. */
-@media (max-width: 30rem) {
-  th,
-  td {
-    padding-right: 0.375rem;
-    font-size: 0.875rem;
-  }
-}
-
 th,
 td {
   padding: 0.5rem 0.75rem 0.5rem 0;
@@ -609,6 +605,20 @@ thead th {
 tbody th {
   font-weight: 500;
   white-space: nowrap;
+}
+
+th:last-child,
+td:last-child {
+  padding-right: 0;
+}
+
+/* Petit écran : cellules resserrées, pour que le tableau des 13 signes tienne dans sa carte. */
+@media (max-width: 30rem) {
+  th,
+  td {
+    padding-right: 0.375rem;
+    font-size: 0.875rem;
+  }
 }
 
 tbody th button.lien {

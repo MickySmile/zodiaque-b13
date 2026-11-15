@@ -1,0 +1,207 @@
+/* Fiches de signe — piste Carte (planche 4). Même gabarit pour les 13 signes. */
+
+.liste-signes ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.liste-signes a {
+  display: block;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--bordure-controle);
+  border-radius: var(--rayon-controle);
+  background: var(--surface);
+  color: var(--texte);
+  text-decoration: none;
+}
+
+.liste-signes a:hover {
+  text-decoration: underline;
+}
+
+.liste-signes a[aria-current="page"] {
+  border: 2px solid var(--accent-selection);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 0.3em;
+}
+
+.carte-signe-b13 {
+  max-width: 46rem;
+  margin: 0 auto 1.25rem;
+  padding: clamp(1.25rem, 5vw, 3rem);
+  border: var(--carte-or-epaisseur) solid var(--carte-or);
+  border-radius: var(--carte-rayon);
+  background: var(--carte-fond);
+  color: var(--carte-texte);
+  /* La carte garde ses couleurs dans les deux thèmes : ses contrôles natifs sont sombres. */
+  color-scheme: dark;
+}
+
+.carte-entete {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1.5rem;
+  color: var(--carte-or);
+  font-family: var(--police-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+}
+
+/* Glyphe Unicode monochrome, le même traitement pour les 13 : ni pictogramme, ni emblème. */
+.carte-glyphe {
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin: 0 auto 1rem;
+  border: var(--carte-or-epaisseur) solid var(--carte-or);
+  border-radius: 50%;
+  color: var(--carte-or);
+  font-family: var(--police-glyphes);
+  font-size: 2.75rem;
+  line-height: 1;
+}
+
+/* Sérif réservé au titre de la fiche ; tout le reste en sans sérif. */
+.carte-titre {
+  margin: 0;
+  color: var(--carte-texte);
+  font-family: var(--police-titre-fiche);
+  font-size: clamp(2.5rem, 9vw, 4.25rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.carte-operation {
+  margin: 0.5rem 0 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--carte-filet);
+  text-align: center;
+}
+
+.carte-operation p:first-child {
+  margin: 0;
+  color: var(--carte-or);
+  font-size: 1.375rem;
+  font-weight: 500;
+}
+
+.carte-rubriques {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 40rem) {
+  .carte-rubriques {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .carte-archetype,
+  .carte-introspection_question,
+  .carte-forbidden_inferences {
+    grid-column: 1 / -1;
+  }
+}
+
+.carte-rubrique h3 {
+  margin: 0 0 0.5rem;
+  color: var(--carte-or);
+  font-family: var(--police-mono);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.carte-rubrique p,
+.carte-rubrique ul {
+  margin: 0 0 0.375rem;
+}
+
+.carte-rubrique ul {
+  padding-left: 1.25rem;
+}
+
+.carte-introspection_question {
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--carte-encart-rayon);
+  background: var(--carte-encart);
+}
+
+.carte-introspection_question p:first-of-type {
+  font-size: 1.25rem;
+  line-height: 1.45;
+}
+
+.carte-signe-b13 .rubrique-provenance {
+  color: var(--carte-texte-discret);
+}
+
+.carte-signe-b13 .rubrique-manquante {
+  color: var(--carte-texte-secondaire);
+}
+
+.rubrique-provenance {
+  margin: 0.25rem 0 0;
+  color: var(--texte-secondaire);
+  font-family: var(--police-mono);
+  font-size: 0.75rem;
+}
+
+.rubrique-manquante {
+  font-style: italic;
+}
+
+/* Réserve écrite sans titre pour la porter, et phrase qui clôt la rubrique dans le PRD. */
+.rubrique-reserve,
+.rubrique-cloture {
+  font-style: italic;
+}
+
+.rubrique-manquante::before {
+  content: "— ";
+}
+
+.carte-pied {
+  margin: 2rem 0 0;
+  color: var(--carte-texte-discret);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.rubriques-complementaires {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+}
+
+.rubriques-complementaires dt {
+  font-weight: 600;
+}
+
+.rubriques-complementaires dd {
+  margin: 0.25rem 0 0;
+}
+
+.rubriques-complementaires dd p,
+.rubriques-complementaires dd ul {
+  margin: 0 0 0.25rem;
+}
+
+.rubriques-complementaires dd ul {
+  padding-left: 1.25rem;
+}
+
+.ecran-fiches h3 {
+  margin: 1rem 0 0.5rem;
+  font-size: 1rem;
+}

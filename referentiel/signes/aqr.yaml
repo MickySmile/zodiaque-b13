@@ -1,0 +1,103 @@
+# Fiche B13 — Verseau (Aqr).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Aqr
+name: Verseau
+operation:
+  status: transcribed
+  text: Reconfigurer le collectif
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Abstraire les personnes, opposer innovation et continuité
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Quelle règle limite les possibilités, et qui bénéficiera de sa modification ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Indépendance, collectif, innovation, réforme
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Reconfigurer : examiner et modifier les règles communes'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Héritage moderne conservé comme choix déclaré ; l'innovation n'est pas une conséquence de la constellation
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Indépendance, coopération, recul critique, invention de règles communes
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: La nouveauté s'évalue à ses effets, elle n'est pas bonne par nature
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Changer l'architecture de coopération
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Verseur d'eau (sans imposer l'élément eau) ; Ganymède, Deucalion, Cécrops ; Saturne ancien, Uranus
+    moderne
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Collectif avec la Balance ; autonomie et contestation du savoir avec le Serpentaire
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: Identité moderne conservée, présentée honnêtement comme choix contemporain
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: L'innovation est un choix déclaré, pas un effet d'Uranus
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Air
+  modality: fixe
+  domicile: Saturne
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

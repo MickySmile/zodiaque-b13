@@ -10,6 +10,8 @@ from typing import Annotated, Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from moteur import referentiel
+
 Manifest = dict[str, Any]
 DataStatus = Literal["verified", "candidate", "synthetic"]
 FiniteFloat = Annotated[float, Field(allow_inf_nan=False)]
@@ -87,18 +89,24 @@ class WheelResponse(Response):
 # --- Fiches -------------------------------------------------------------------------------------
 
 
-class SignSheet(Response):
+class SheetOfSign(Response):
+    """Fiche d'un signe : la transcription du référentiel, telle que le moteur la lit."""
+
     sign_id: str
     name: str
     glyph: str
-    sheet: None
-    sheet_status: Literal["not_transcribed"]
+    sheet: referentiel.SignSheet
+    sheet_status: Literal["transcribed"]
+    missing: list[str]  # rubriques communes que le PRD ne remplit pas pour ce signe
     epistemic_status: Literal["symbolic_proposal"]
 
 
 class SignsResponse(Response):
     data_status: DataStatus
-    signs: list[SignSheet]
+    ruleset_version: str
+    ruleset_sha256: str
+    signs: list[SheetOfSign]
+    rules: referentiel.CommonRules
     manifest: Manifest
 
 

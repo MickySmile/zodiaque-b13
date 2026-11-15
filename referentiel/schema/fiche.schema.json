@@ -1,0 +1,391 @@
+{
+  "$defs": {
+    "Entry": {
+      "additionalProperties": false,
+      "description": "Une rubrique : un texte transcrit du PRD avec sa source et sa provenance, ou `missing`.",
+      "properties": {
+        "status": {
+          "enum": [
+            "transcribed",
+            "missing"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "table": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Table"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "caveat": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Caveat"
+        },
+        "closing": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Closing"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "provenance": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "H",
+                  "M",
+                  "C"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provenance"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Entry",
+      "type": "object"
+    },
+    "HistoricalCorrespondences": {
+      "additionalProperties": false,
+      "description": "Catégories héritées, consultables et inactives : aucun code ne les lit pour interpréter.\n\nTout ou rien : un signe a ses trois correspondances documentées, ou n'en a aucune.",
+      "properties": {
+        "active": {
+          "const": false,
+          "title": "Active",
+          "type": "boolean"
+        },
+        "element": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Element"
+        },
+        "modality": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Modality"
+        },
+        "domicile": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Domicile"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "provenance": {
+          "items": {
+            "enum": [
+              "H",
+              "M",
+              "C"
+            ],
+            "type": "string"
+          },
+          "title": "Provenance",
+          "type": "array"
+        }
+      },
+      "required": [
+        "active",
+        "element",
+        "modality",
+        "domicile",
+        "source",
+        "provenance"
+      ],
+      "title": "HistoricalCorrespondences",
+      "type": "object"
+    },
+    "Section": {
+      "additionalProperties": false,
+      "description": "Rubrique complémentaire : une rubrique du PRD hors des quatre de FR-15, sous son nom.",
+      "properties": {
+        "status": {
+          "const": "transcribed",
+          "title": "Status",
+          "type": "string"
+        },
+        "text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Text"
+        },
+        "items": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Items"
+        },
+        "table": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Table"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "caveat": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Caveat"
+        },
+        "closing": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Closing"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source"
+        },
+        "provenance": {
+          "anyOf": [
+            {
+              "items": {
+                "enum": [
+                  "H",
+                  "M",
+                  "C"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Provenance"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "label"
+      ],
+      "title": "Section",
+      "type": "object"
+    },
+    "Table": {
+      "additionalProperties": false,
+      "description": "Tableau transcrit : ses colonnes et ses lignes, cellule par cellule.",
+      "properties": {
+        "columns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "rows": {
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Rows",
+          "type": "array"
+        }
+      },
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "title": "Table",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Fiche d'un signe. Le même schéma pour les 13 : aucun champ propre à un signe.",
+  "properties": {
+    "schema_version": {
+      "const": 1,
+      "title": "Schema Version",
+      "type": "integer"
+    },
+    "sign_id": {
+      "title": "Sign Id",
+      "type": "string"
+    },
+    "name": {
+      "title": "Name",
+      "type": "string"
+    },
+    "operation": {
+      "$ref": "#/$defs/Entry"
+    },
+    "archetype": {
+      "$ref": "#/$defs/Entry"
+    },
+    "resources": {
+      "$ref": "#/$defs/Entry"
+    },
+    "tensions": {
+      "$ref": "#/$defs/Entry"
+    },
+    "introspection_question": {
+      "$ref": "#/$defs/Entry"
+    },
+    "forbidden_inferences": {
+      "$ref": "#/$defs/Entry"
+    },
+    "additional_sections": {
+      "items": {
+        "$ref": "#/$defs/Section"
+      },
+      "title": "Additional Sections",
+      "type": "array"
+    },
+    "historical_correspondences": {
+      "$ref": "#/$defs/HistoricalCorrespondences"
+    }
+  },
+  "required": [
+    "schema_version",
+    "sign_id",
+    "name",
+    "operation",
+    "archetype",
+    "resources",
+    "tensions",
+    "introspection_question",
+    "forbidden_inferences",
+    "additional_sections",
+    "historical_correspondences"
+  ],
+  "title": "SignSheet",
+  "type": "object"
+}

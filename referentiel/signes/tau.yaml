@@ -1,0 +1,103 @@
+# Fiche B13 — Taureau (Tau).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Tau
+name: Taureau
+operation:
+  status: transcribed
+  text: Consolider
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Confondre valeur et possession, continuité et immobilité
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Qu'est-ce qui mérite d'être entretenu, et qu'est-ce que je conserve par habitude ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Stabilité, patience, sensorialité, possession
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Consolider : entretenir une valeur concrète'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Noyau conservé. Continuité distinguée de l'immobilité ; rien ne justifie de retirer la sensualité
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Patience, constance, appéciation sensorielle, entretien des ressources
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: 'La stabilité devient une activité : maintenir, nourrir, réparer'
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Préserver une valeur d'usage dans le temps
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Hyades et Pléiades ; Zeus et Europe, Io (déplacement, métamorphose) ; domicile de Vénus, exaltation
+    de la Lune
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Durée avec le Capricorne ; attention concrète avec la Vierge ; entretien avec le Serpentaire
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: La sensorialité reste un motif choisi, non démontré par le dessin du taureau
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: La continuité demeure, sans score de terre ni maîtrise vénusienne
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Terre
+  modality: fixe
+  domicile: Vénus
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

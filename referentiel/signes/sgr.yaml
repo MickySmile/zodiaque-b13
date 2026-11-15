@@ -1,0 +1,104 @@
+# Fiche B13 — Sagittaire (Sgr).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Sgr
+name: Sagittaire
+operation:
+  status: transcribed
+  text: Orienter
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Simplification, dogmatisme, promesse qui dépasse les moyens
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Cette perspective rend-elle mieux compte de l'expérience, ou m'évite-t-elle de la regarder ?
+    »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Exploration, liberté, connaissance, sens, enseignement
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Orienter : une perspective qui guide sans s''imposer'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Quête de sens conservée. Le Serpentaire traite l'usage du savoir, pas son acquisition
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Exploration, connaissance, quête de sens, enseignement, ouverture
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: La vision devient une carte révisable, pas une vérité supérieure
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Choisir un horizon qui donne une direction à l'expérience
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Archer composite ; Crotos chez le Pseudo-Hygin, éviter l'équation Sagittaire = Chiron ; domicile
+    de Jupiter
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Savoir et transmission avec le Serpentaire ; pluralité avec les Gémeaux
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: Ni la connaissance ni la sagesse comme aspiration ne lui sont retirées
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: La quête de sens demeure, sans maîtrise jupitérienne
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Feu
+  modality: mutable
+  domicile: Jupiter
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

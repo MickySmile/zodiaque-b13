@@ -3,6 +3,7 @@ import { ApiError, api } from './api/client.ts'
 import type { Api } from './api/client.ts'
 import type { BirthRequest, SunSignResult, WheelData } from './api/types.ts'
 import { Calendrier } from './ecrans/Calendrier.tsx'
+import { Fiches } from './ecrans/Fiches.tsx'
 import { PageRoue } from './ecrans/PageRoue.tsx'
 import { Resultat } from './ecrans/Resultat.tsx'
 import { Saisie } from './ecrans/Saisie.tsx'
@@ -12,7 +13,7 @@ import { useGlyphesDisponibles } from './glyphes.ts'
 import { BandeauStatut } from './statut/BandeauStatut.tsx'
 import type { StatutAffiche } from './statut/BandeauStatut.tsx'
 
-type Route = 'saisie' | 'resultat' | 'calendrier' | 'roue'
+type Route = 'saisie' | 'resultat' | 'calendrier' | 'roue' | 'fiches'
 
 const ROUTES: Record<string, Route> = {
   '': 'saisie',
@@ -20,12 +21,17 @@ const ROUTES: Record<string, Route> = {
   '#/resultat': 'resultat',
   '#/calendrier': 'calendrier',
   '#/roue': 'roue',
+  '#/fiches': 'fiches',
 }
+
+/** Adresse d'une fiche : #/fiches/<identifiant du signe>. Le signe n'est pas une saisie. */
+const FICHE = /^#\/fiches\/([A-Za-z]{1,8})$/
 
 const NAVIGATION: { route: Route; hash: string; libelle: string }[] = [
   { route: 'saisie', hash: '#/', libelle: 'Mon signe' },
   { route: 'calendrier', hash: '#/calendrier', libelle: 'Calendrier' },
   { route: 'roue', hash: '#/roue', libelle: 'Roue' },
+  { route: 'fiches', hash: '#/fiches', libelle: 'Fiches' },
 ]
 
 /** Année proposée à l'ouverture du calendrier : celle de l'horloge du navigateur. */
@@ -35,8 +41,10 @@ function viserLeTitre() {
   document.querySelector<HTMLElement>('main h1')?.focus({ preventScroll: true })
 }
 
-function routeCourante(): Route {
-  return ROUTES[window.location.hash] ?? 'saisie'
+function lire(hash: string): { route: Route; signe: string | null } {
+  const fiche = FICHE.exec(hash)
+  if (fiche !== null) return { route: 'fiches', signe: fiche[1] }
+  return { route: ROUTES[hash] ?? 'saisie', signe: null }
 }
 
 /** Session en mémoire : rien n'est écrit dans l'adresse ni dans le stockage du navigateur. */
@@ -51,7 +59,8 @@ interface Session {
  * alimente toutes les vues. Chaque vue affiche le statut de ce qu'elle montre (FR-18).
  */
 export default function App({ client = api }: { client?: Api }) {
-  const [route, setRoute] = useState<Route>(routeCourante)
+  const [adresse, setAdresse] = useState(() => window.location.hash)
+  const { route, signe } = lire(adresse)
   const [sombre, setSombre] = useState(false)
   const [roue, setRoue] = useState<WheelData | null>(null)
   const [statut, setStatut] = useState<StatutAffiche>('chargement')
@@ -61,7 +70,7 @@ export default function App({ client = api }: { client?: Api }) {
   const glyphes = useGlyphesDisponibles()
 
   useEffect(() => {
-    const suivre = () => setRoute(routeCourante())
+    const suivre = () => setAdresse(window.location.hash)
     window.addEventListener('hashchange', suivre)
     return () => window.removeEventListener('hashchange', suivre)
   }, [])
@@ -99,7 +108,7 @@ export default function App({ client = api }: { client?: Api }) {
 
   function aller(hash: string) {
     window.location.hash = hash
-    setRoute(ROUTES[hash] ?? 'saisie')
+    setAdresse(hash)
   }
 
   async function choisirOccurrence(fold: number) {
@@ -130,6 +139,17 @@ export default function App({ client = api }: { client?: Api }) {
         roue={roue}
         statut={statut}
         anneeInitiale={ANNEE_COURANTE}
+        glyphesDisponibles={glyphes}
+      />
+    )
+  } else if (route === 'fiches') {
+    vue = (
+      <Fiches
+        client={client}
+        roue={roue}
+        statut={statut}
+        signe={signe}
+        onSigne={(signId) => aller(`#/fiches/${signId}`)}
         glyphesDisponibles={glyphes}
       />
     )

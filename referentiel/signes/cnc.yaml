@@ -1,0 +1,103 @@
+# Fiche B13 — Cancer (Cnc).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Cnc
+name: Cancer
+operation:
+  status: transcribed
+  text: Abriter et transmettre
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Faire de la protection une clôture, de la mémoire une dette
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Ce que je protège permet-il aussi de grandir et de partir ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Protection, mémoire, foyer, attachement
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Abriter et transmettre : rendre l''appartenance habitable'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Noyau conservé. Obligation maternelle et fondement solsticial retirés, pas la sensibilité
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Protection, attachement, mémoire, accueil
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: « Materner » devient rendre un milieu habitable, quel que soit le genre ou le rôle
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Créer une continuité d'appartenance
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Crabe du combat d'Héraclès contre l'Hydre, pas un mythe de maternité ; solstice abandonné ; domicile
+    de la Lune
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Aide avec le Serpentaire ; réceptivité avec les Poissons
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: 'Il ne perd pas le soin : soin du milieu relationnel et de la continuité du lien'
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: La protection demeure, non déduite d'un élément ou d'un solstice
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Eau
+  modality: cardinal
+  domicile: Lune
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

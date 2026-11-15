@@ -65,6 +65,10 @@ export function Resultat({
         : `${degres(scenario.classification.degrees_in_sign, 1)} après l’entrée dans le signe`,
   }))
   const possible = resultat.scenarios.some((scenario) => scenario.classification.status === 'possible')
+  // Signes cités par le résultat, dans l'ordre du temps, sans en préférer un.
+  const signesCites = [
+    ...new Set(resultat.scenarios.flatMap((scenario) => scenario.classification.possible_signs)),
+  ]
   // Le titre ne promet pas un signe unique quand il y en a plusieurs à départager.
   const titrePage = resultat.title
     ? majuscule(resultat.title)
@@ -261,8 +265,15 @@ export function Resultat({
           <p>Ascendant et maisons : non calculés dans cette version.</p>
         )}
         <p>
-          Aucun texte interprétatif dans cette version : les fiches de signe arriveront avec le
-          référentiel B13.
+          Ce résultat est un calcul : il ne contient aucun texte interprétatif. La lecture proposée
+          pour un signe est dans sa fiche, à lire comme une proposition symbolique :{' '}
+          {signesCites.map((id, rang) => (
+            <span key={id}>
+              {rang > 0 && ', '}
+              <a href={`#/fiches/${id}`}>fiche {nom(id)}</a>
+            </span>
+          ))}
+          .
         </p>
       </section>
 

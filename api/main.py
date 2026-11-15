@@ -27,7 +27,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 import moteur
 from api import schemas
 from api.catalogue import SIGN_LABELS
-from moteur import natal, passages, places
+from moteur import natal, passages, places, referentiel
 from moteur.boundaries import INTERVAL_POLICY, BoundaryError
 from moteur.civil_time import BirthInput, InputError, NonexistentLocalTime, load_zone
 from moteur.classification import ClassificationError, Zodiac, load_canonical
@@ -151,7 +151,13 @@ def _stopped(_: Request, __: Exception) -> JSONResponse:
     )
 
 
-for _stopping in (ClassificationError, BoundaryError, PositionError, passages.PassageError):
+for _stopping in (
+    ClassificationError,
+    BoundaryError,
+    PositionError,
+    passages.PassageError,
+    referentiel.ReferentielError,
+):
     app.add_exception_handler(_stopping, _stopped)
 
 
@@ -246,21 +252,31 @@ def boundaries() -> dict[str, Any]:
 
 @app.get("/api/signs", response_model=schemas.SignsResponse, responses=ERRORS)
 def signs() -> dict[str, Any]:
-    """Les 13 fiches de signe. Le référentiel B13 n'est pas encore transcrit : fiches absentes."""
+    """Les 13 fiches de signe du référentiel B13, dans l'ordre du cercle (FR-15).
+
+    Textes transcrits du PRD : des propositions symboliques, jamais une mesure. Une rubrique que
+    le PRD ne remplit pas arrive `missing`, et la liste en est donnée pour chaque signe.
+    """
     zodiac = load_canonical()
-    manifest = boundary_manifest(zodiac)
+    symbolic = referentiel.load_canonical()
+    # La version du référentiel va au manifeste : elle change à chaque modification des fiches.
+    manifest = {**boundary_manifest(zodiac), "symbolic_ruleset_version": symbolic.version}
     return {
         "data_status": manifest["data_status"],
+        "ruleset_version": symbolic.version,
+        "ruleset_sha256": symbolic.sha256,
         "signs": [
             {
                 "sign_id": sign.sign_id,
                 **asdict(SIGN_LABELS[sign.sign_id]),
-                "sheet": None,
-                "sheet_status": "not_transcribed",
+                "sheet": symbolic.sheet(sign.sign_id).model_dump(),
+                "sheet_status": "transcribed",
+                "missing": list(symbolic.sheet(sign.sign_id).missing()),
                 "epistemic_status": "symbolic_proposal",
             }
             for sign in zodiac.signs
         ],
+        "rules": symbolic.rules.model_dump(),
         "manifest": manifest,
     }
 

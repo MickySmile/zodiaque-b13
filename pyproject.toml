@@ -9,6 +9,7 @@ dependencies = [
     "fastapi>=0.163.1",
     "numpy>=2.5.4",
     "pydantic>=2.14.3",
+    "pyyaml>=6.0.3",
     "scipy>=1.18.1",
     "skyfield>=1.55",
     "timezonefinder>=9.2.0",
@@ -42,7 +43,7 @@ explicit_package_bases = true
 # Bibliothèques de calcul livrées sans annotations (pas de py.typed) : leurs valeurs sont
 # converties explicitement aux frontières du moteur.
 [[tool.mypy.overrides]]
-module = ["skyfield.*", "scipy.*", "jplephem.*", "tzdata", "tzdata.*"]
+module = ["skyfield.*", "scipy.*", "jplephem.*", "tzdata", "tzdata.*", "yaml"]
 ignore_missing_imports = true
 
 [dependency-groups]

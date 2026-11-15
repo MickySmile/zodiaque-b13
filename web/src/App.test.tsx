@@ -3,12 +3,14 @@ import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App.tsx'
 import { ApiError } from './api/client.ts'
-import { clientEssai, roue, signeSolaire } from './essais/jeux.ts'
+import { clientEssai, fiches, roue, signeSolaire } from './essais/jeux.ts'
 
 const ROUTES = [
   ['#/', 'Entrez vos informations de naissance'],
   ['#/calendrier', 'Calendrier du Soleil dans les 13 signes'],
   ['#/roue', 'La roue à 13 signes'],
+  ['#/fiches', 'Les 13 fiches de signe'],
+  ['#/fiches/Oph', 'Les 13 fiches de signe'],
   ['#/resultat', 'Aucun résultat à afficher'],
 ] as const
 
@@ -41,6 +43,7 @@ describe('FR-18 — le statut est visible sur chaque vue', () => {
     const client = clientEssai({
       boundaries: async () => roue('verified'),
       calendar: async (annee) => ({ ...(await clientEssai().calendar(annee)), data_status: 'verified' }),
+      signs: async () => fiches('verified'),
     })
     render(<App client={client} />)
     await waitFor(() => expect(bandeau().getByText('réel vérifié')).toBeInTheDocument())
@@ -81,7 +84,7 @@ describe('coquille de l’application', () => {
     render(<App client={clientEssai()} />)
     const navigation = screen.getByRole('navigation', { name: 'Vues' })
     const liens = within(navigation).getAllByRole('link')
-    expect(liens.map((lien) => lien.textContent)).toEqual(['Mon signe', 'Calendrier', 'Roue'])
+    expect(liens.map((lien) => lien.textContent)).toEqual(['Mon signe', 'Calendrier', 'Roue', 'Fiches'])
     expect(within(navigation).getByRole('link', { name: 'Mon signe' })).toHaveAttribute(
       'aria-current',
       'page',
@@ -112,6 +115,30 @@ describe('coquille de l’application', () => {
       name: 'Calendrier du Soleil dans les 13 signes',
     })
     expect(titre).toHaveFocus()
+  })
+
+  it('FR-15 : l’adresse d’une fiche ouvre ce signe ; la liste change de fiche sans quitter la vue', async () => {
+    window.location.hash = '#/fiches/Oph'
+    render(<App client={clientEssai()} />)
+    const article = await screen.findByRole('article')
+    expect(within(article).getByRole('heading', { level: 2 })).toHaveTextContent('Serpentaire')
+    expect(screen.getByRole('link', { name: 'Fiches' })).toHaveAttribute('aria-current', 'page')
+    await userEvent.click(
+      within(screen.getByRole('navigation', { name: 'Les 13 signes' })).getByRole('link', {
+        name: 'Lion',
+      }),
+    )
+    expect(window.location.hash).toBe('#/fiches/Leo')
+    expect(within(screen.getByRole('article')).getByRole('heading', { level: 2 })).toHaveTextContent(
+      'Lion',
+    )
+  })
+
+  it('FR-18 : toute vue qui montre une fiche porte « proposition symbolique »', async () => {
+    window.location.hash = '#/fiches'
+    render(<App client={clientEssai()} />)
+    await screen.findByRole('article')
+    expect(bandeau().getByText(/proposition symbolique/)).toBeInTheDocument()
   })
 
   it('mode sombre : un bouton bascule le thème, clair par défaut', async () => {

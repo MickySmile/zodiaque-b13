@@ -1,0 +1,193 @@
+# Fiche B13 — Serpentaire (Oph).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Oph
+name: Serpentaire
+operation:
+  status: transcribed
+  text: Exercer une capacité en restant corrigible
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - C
+archetype:
+  status: transcribed
+  text: Le praticien qui reste apprenant
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+resources:
+  status: transcribed
+  text: Discernement d'intervention, intégration, transmission, capacité de révision
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+tensions:
+  status: transcribed
+  text: Transformer l'aide ou le savoir en dépendance
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Qu'est-ce que ma connaissance m'autorise à faire, et qu'est-ce qu'elle ne m'autorise pas à décider
+    pour autrui ? »
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+forbidden_inferences:
+  status: transcribed
+  items:
+  - aptitude médicale
+  - vocation thérapeutique
+  - traumatisme nécessaire
+  - supériorité spirituelle
+  - trait de personnalité garanti
+  source: docs/prd/02-serpentaire.md § 11
+  provenance:
+  - C
+additional_sections:
+- label: Identité symbolique
+  status: transcribed
+  text: La maîtrise révisable
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - C
+- label: Question centrale
+  status: transcribed
+  text: « Puis-je agir ainsi, et répondre des effets ? »
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - C
+- label: Ressource distinctive
+  status: transcribed
+  text: Articuler compétence, limites et autonomie d'autrui
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - C
+- label: Affinités mythologiques
+  status: transcribed
+  text: 'Asclépios, Chiron : documentées, sans autorité d''interprétation'
+  source: docs/prd/02-serpentaire.md § 1
+  provenance:
+  - M
+- label: Motivation
+  status: transcribed
+  text: Rendre une capacité utile sans en nier les limites
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Besoin fondamental
+  status: transcribed
+  text: Une relation où compétence et vulnérabilité peuvent coexister
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Besoin affectif
+  status: transcribed
+  text: Être apprécié sans devoir réparer, expliquer ou soutenir continuellement
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Rapport à l'action
+  status: transcribed
+  text: Intervenir dans un périmètre, vérifier les effets, savoir passer le relais
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Rapport aux émotions
+  status: transcribed
+  text: Reconnaître ce qui est ressenti avant d'en faire un problème à résoudre
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Rapport au savoir
+  status: transcribed
+  text: Distinguer connaissance, expérience, hypothèse et autorisation d'agir
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Rapport aux relations
+  status: transcribed
+  text: Aider sans prendre la place ; recevoir sans se sentir dépossédé
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Rapport à la transformation
+  status: transcribed
+  text: Changer sa manière d'exercer une capacité, pas seulement gagner en puissance
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Peur symbolique
+  status: transcribed
+  text: Être inutile, faire du tort, perdre sa légitimité en reconnaissant une limite
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Contradiction centrale
+  status: transcribed
+  text: Désirer la confiance tout en craignant de ne plus contrôler ses conditions
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Excès possibles
+  status: transcribed
+  items:
+  - 'Surintervention : tout devient une occasion de conseiller.'
+  - 'Sauvetage : l''autre est apprécié surtout comme personne à aider.'
+  - 'Monopole : garder une connaissance difficile d''accès pour rester nécessaire.'
+  - 'Invulnérabilité affichée : ne jamais montrer de besoin.'
+  - 'Scrupule paralysant : éviter toute décision par peur de ses effets.'
+  - 'Déresponsabilisation : invoquer l''incertitude pour ne répondre de rien.'
+  - 'Supériorité morale : faire de sa prudence une preuve de valeur.'
+  - 'Goût de la complexité : rendre mystérieux ce qui pourrait être expliqué.'
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+  caveat: des impasses narratives à explorer, jamais des diagnostics
+- label: Dans les relations
+  status: transcribed
+  text: 'Dans les relations, le thème n''est pas « aimer les personnes blessées » mais la négociation
+    de l''asymétrie : que se passe-t-il quand l''un sait ce que l''autre ignore ? Peut-on refuser une
+    aide sans abîmer le lien ? La relation tient-elle quand les rôles s''inversent ? Peut-on être aimé
+    sans être nécessaire ? Une relation satisfaisante permettrait de dire : « Tu peux m''aider, mais tu
+    n''as pas à me prendre en charge ; je peux te faire confiance sans te croire infaillible. »'
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+- label: Trajectoires de maturation
+  status: transcribed
+  table:
+    columns:
+    - Point de départ
+    - Déplacement proposé
+    rows:
+    - - « Je dois être utile pour avoir une place »
+      - « Ma place ne dépend pas uniquement de mon utilité »
+    - - « Si je sais, je dois intervenir »
+      - « Une compétence ne constitue pas à elle seule un mandat »
+    - - « Une erreur détruit ma légitimité »
+      - « Reconnaître et corriger une erreur fait partie de la responsabilité »
+    - - « Il faut comprendre avant de ressentir »
+      - « Je peux éprouver sans immédiatement expliquer »
+    - - « Bien transmettre, c'est donner la bonne réponse »
+      - « Bien transmettre, c'est rendre l'autre capable de juger »
+    - - « Je dois porter la situation jusqu'au bout »
+      - « Le relais et le retrait peuvent être des actes responsables »
+  source: docs/prd/02-serpentaire.md § 6
+  provenance:
+  - C
+  caveat: des passages possibles, ni des âges ni des étapes obligatoires
+  closing: Le critère de maturation n'est pas une puissance grandissante, mais une relation plus souple
+    à l'action, à la limite et à la réciprocité.
+historical_correspondences:
+  active: false
+  element: null
+  modality: null
+  domicile: null
+  source: docs/prd/02-serpentaire.md § 9
+  provenance:
+  - H

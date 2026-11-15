@@ -1,0 +1,103 @@
+# Fiche B13 — Bélier (Ari).
+# Transcription mot pour mot du PRD : rien ne se rédige ni ne se complète ici (CLAUDE.md, trois
+# régimes). Chaque texte cite sa source ; une rubrique que le PRD ne remplit pas est « missing ».
+# Provenance : H héritage documenté, M référence mythologique, C choix contemporain.
+# Même schéma pour les 13 signes : referentiel/schema/fiche.schema.json (décision 0013).
+schema_version: 1
+sign_id: Ari
+name: Bélier
+operation:
+  status: transcribed
+  text: Engager
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+archetype:
+  status: missing
+resources:
+  status: missing
+tensions:
+  status: transcribed
+  text: Confondre capacité de décider et nécessité d'affronter
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+introspection_question:
+  status: transcribed
+  text: « Quel commencement suffisamment clair puis-je assumer sans attendre de tout maîtriser ? »
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+forbidden_inferences:
+  status: missing
+additional_sections:
+- label: Interprétation héritée ou courante
+  status: transcribed
+  text: Initiative, courage, impulsivité, affirmation
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - H
+- label: Proposition B13
+  status: transcribed
+  text: 'Engager : faire passer une intention à l''existence'
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Justification et changement réel
+  status: transcribed
+  text: Noyau conservé. Seul le commencement printanier disparaît ; la combativité ne devient pas obligatoire
+  source: docs/prd/03-consequences.md § 4
+  provenance:
+  - C
+- label: Noyau conservé
+  status: transcribed
+  text: Initiative, décision, affirmation, courage d'essayer
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Reformulation
+  status: transcribed
+  text: « Commencer » ne signifie plus ouvrir l'année, mais créer un premier engagement
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Singularité
+  status: transcribed
+  text: Le premier geste qui rompt l'inertie
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Ce que disent les couches historiques
+  status: transcribed
+  text: Phrixos et Hellé, bélier guidant l'armée de Dionysos (passage, pas seulement agression) ; équinoxe
+    abandonné ; domicile de Mars
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - H
+  - M
+- label: Chevauchements
+  status: transcribed
+  text: Action avec Mars ; responsabilité avec le Serpentaire ; expression avec le Lion
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Verdict de l'étude
+  status: transcribed
+  text: 'Aucun changement de noyau : le Serpentaire ne lui retire ni l''action ni le risque'
+  source: docs/prd/03-consequences.md § 5
+  provenance:
+  - C
+- label: Conséquence pratique
+  status: transcribed
+  text: L'initiative reste un motif ; Mars ne gouverne ni le placement ni la maison
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+historical_correspondences:
+  active: false
+  element: Feu
+  modality: cardinal
+  domicile: Mars
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - H

@@ -1,0 +1,41 @@
+# Règles communes du référentiel B13, transcrites mot pour mot du PRD.
+# common_rules : « Règles communes obligatoires » de l'annexe technique § I.
+# general_policy : « Politique générale pour les 12 signes », onglet Conséquences § 3.
+# inherited_categories_decision : intitulé du tableau « Aucune catégorie héritée », onglet Serpentaire § 9.
+# historical_heritage : statut de la couche « Héritage historique », onglet Conséquences § 7.
+schema_version: 1
+common_rules:
+  status: transcribed
+  items:
+  - Un placement n'annule pas les autres ; une tension n'est pas un défaut moral ; une ressource n'est
+    pas un talent garanti.
+  - Un aspect difficile n'annonce pas un événement malheureux ; un signe absent n'indique pas une incapacité.
+  - La progression dans un signe n'est pas un degré de maturité ; une frontière proche ne crée pas un
+    mélange de signes.
+  - 'Classement incertain : scénarios distincts, jamais de probabilité non fondée.'
+  - La personne peut refuser une lecture sans que ce refus serve de preuve.
+  - Aucun diagnostic, pronostic médical ou verdict sur une relation.
+  source: docs/prd/01-annexe-technique.md § I
+  provenance:
+  - C
+general_policy:
+  status: transcribed
+  text: pas d'élément, de modalité ou de polarité exclusifs ; pas de maîtrise ni de dignité actives ;
+    pas d'assimilation signe–maison–planète ; pas de caractéristiques médicales, anatomiques ou de fécondité
+    ; pas d'aspects déduits du nombre de signes ; pas de personnalité plus intense parce qu'un secteur
+    est plus large ou plus étroit.
+  source: docs/prd/03-consequences.md § 3
+  provenance:
+  - C
+inherited_categories_decision:
+  status: transcribed
+  text: Aucune catégorie héritée (décision B13 v1, la même pour les 13 signes)
+  source: docs/prd/02-serpentaire.md § 9
+  provenance:
+  - C
+historical_heritage:
+  status: transcribed
+  text: Consultable, sans automatisme actif
+  source: docs/prd/03-consequences.md § 7
+  provenance:
+  - C

@@ -21,6 +21,7 @@ const VUES = [
   ['saisie', '#/', 'Entrez vos informations de naissance'],
   ['calendrier', '#/calendrier', 'Calendrier du Soleil dans les 13 signes'],
   ['roue', '#/roue', 'La roue à 13 signes'],
+  ['fiches', '#/fiches/Oph', 'Les 13 fiches de signe'],
 ] as const
 const LARGEURS = [360, 1280] as const
 const MOIS = [
@@ -110,7 +111,7 @@ test.describe('FR-18 — statut et accessibilité de chaque vue', () => {
         await expect(page.getByRole('heading', { level: 1, name: titre })).toBeVisible()
         await expect(statut(page).getByText('candidat', { exact: true })).toBeVisible()
         // Le tableau n'arrive qu'avec la réponse de l'API : on l'attend avant de mesurer.
-        if (nom !== 'saisie') await expect(page.getByRole('table')).toBeVisible()
+        if (nom !== 'saisie') await expect(page.getByRole('table').first()).toBeVisible()
         await sansViolation(page)
         const deborde = () =>
           page.evaluate(
@@ -418,6 +419,105 @@ test.describe('calendrier et roue', () => {
         async () => (await document.fonts.load('34px "Noto Sans Symbols 2"', '\u2609')).length,
       ),
     ).toBeGreaterThan(0)
+  })
+})
+
+test.describe('FR-15 — fiches de signe', () => {
+  interface Rubrique {
+    status: string
+    text: string | null
+    items: string[] | null
+  }
+  interface Fiche {
+    sign_id: string
+    name: string
+    missing: string[]
+    sheet: Record<string, Rubrique> & { additional_sections: { label: string }[] }
+  }
+
+  async function fiches(request: APIRequestContext): Promise<Fiche[]> {
+    return (await (await request.get('/api/signs')).json()).signs
+  }
+
+  test('FR-15 : la fiche du Serpentaire montre archétype, ressources, tensions, question, provenance', async ({
+    page,
+    request,
+  }) => {
+    const serpentaire = (await fiches(request)).find((fiche) => fiche.sign_id === 'Oph')!
+    await page.goto('/#/fiches/Oph')
+    const carte = page.getByRole('article')
+    await expect(carte.getByRole('heading', { level: 2 })).toHaveText('Serpentaire')
+    // Les textes attendus viennent de l'API, qui les lit dans le référentiel : rien n'est écrit ici.
+    for (const [libelle, champ] of [
+      ['Archétype', 'archetype'],
+      ['Ressources', 'resources'],
+      ['Tensions', 'tensions'],
+      ['Question d’introspection', 'introspection_question'],
+    ] as const) {
+      const rubrique = carte.getByRole('group', { name: libelle })
+      await expect(rubrique.getByText(serpentaire.sheet[champ].text!, { exact: true })).toBeVisible()
+      await expect(rubrique.getByText('C · choix contemporain')).toBeVisible()
+    }
+    await expect(carte.getByText(/Proposition contemporaine · clé de lecture choisie/)).toBeVisible()
+    await expect(statut(page).getByText(/proposition symbolique/)).toBeVisible()
+    await expect(statut(page).getByText('candidat', { exact: true })).toBeVisible()
+    // Glyphe Unicode monochrome, rendu par la police des symboles : ni pictogramme, ni emblème.
+    const glyphe = carte.locator('.carte-glyphe')
+    await expect(glyphe).toHaveText('\u26ce\ufe0e')
+    expect(
+      (await glyphe.evaluate((element) => getComputedStyle(element).fontFamily)).startsWith(
+        '"Noto Sans Symbols"',
+      ),
+    ).toBe(true)
+  })
+
+  test('FR-15 : les 13 fiches ont le même gabarit ; une rubrique manquante est dite, jamais comblée', async ({
+    page,
+    request,
+  }) => {
+    const toutes = await fiches(request)
+    expect(toutes).toHaveLength(13)
+    await page.goto('/#/fiches')
+    const liste = page.getByRole('navigation', { name: 'Les 13 signes' })
+    await expect(liste.getByRole('link')).toHaveCount(13)
+    const gabarits = new Set<string>()
+    for (const fiche of toutes) {
+      await liste.getByRole('link', { name: fiche.name, exact: true }).click()
+      const carte = page.getByRole('article')
+      await expect(carte.getByRole('heading', { level: 2 })).toHaveText(fiche.name)
+      gabarits.add((await carte.getByRole('group').evaluateAll((groupes) =>
+        groupes.map((groupe) => groupe.getAttribute('aria-label')),
+      )).join('|'))
+      // Autant de mentions « non rédigé » que de rubriques manquantes, ni plus ni moins.
+      await expect(carte.getByText('non rédigé à ce jour')).toHaveCount(fiche.missing.length)
+      await expect(
+        page.getByRole('region', { name: 'Rubriques complémentaires' }).locator('dt'),
+      ).toHaveCount(fiche.sheet.additional_sections.length)
+    }
+    expect(gabarits.size).toBe(1)
+  })
+
+  test('correspondances historiques : 13 signes, tous marqués « inactif »', async ({ page }) => {
+    await page.goto('/#/fiches')
+    const tableau = page.getByRole('table', { name: /Correspondances historiques/ })
+    await expect(tableau.locator('tbody tr')).toHaveCount(13)
+    await expect(tableau.locator('tbody tr').filter({ hasText: 'inactif' })).toHaveCount(13)
+    await expect(page.getByText(/aucun calcul ni aucune lecture ne s’en sert/)).toBeVisible()
+  })
+
+  test('du résultat à la fiche : le lien mène à la fiche du signe trouvé', async ({
+    page,
+    request,
+  }) => {
+    const tous = await signes(request)
+    const entree = (await entrees(request))[4]
+    const [annee, mois, jour] = entree.instant_local.slice(0, 10).split('-').map(Number)
+    const plusTard = new Date(Date.UTC(annee, mois - 1, jour + 10)).toISOString().slice(0, 10)
+    await saisir(page, { date: plusTard, heure: '12:00' })
+    const nom = tous.find((signe) => signe.sign_id === entree.sign_id)!.name
+    await page.getByRole('link', { name: `fiche ${nom}` }).click()
+    await expect(page.getByRole('article').getByRole('heading', { level: 2 })).toHaveText(nom)
+    expect(page.url()).toMatch(new RegExp(`#/fiches/${entree.sign_id}$`))
   })
 })
 

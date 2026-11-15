@@ -117,9 +117,24 @@ describe('écran du résultat', () => {
     )
   })
 
-  it('aucun texte interprétatif n’est rédigé : l’absence est dite', () => {
+  it('aucun texte interprétatif dans le résultat : il renvoie à la fiche, proposition symbolique', () => {
     monter()
-    expect(screen.getByText(/Aucun texte interprétatif dans cette version/)).toBeInTheDocument()
+    const phrase = screen.getByText(/il ne contient aucun texte interprétatif/)
+    expect(phrase).toHaveTextContent('proposition symbolique')
+    expect(screen.getByRole('link', { name: 'fiche Lion' })).toHaveAttribute('href', '#/fiches/Leo')
+  })
+
+  it('FR-03 : deux signes possibles, deux fiches proposées, dans l’ordre du temps, sans préférence', () => {
+    monter(
+      signeSolaire([{ signe: 'Oph', fraction: 0.0005, possibles: ['Sco', 'Oph'] }], {
+        time_status: 'uncertain',
+      }),
+    )
+    const fichesProposees = screen.getAllByRole('link', { name: /^fiche / })
+    expect(fichesProposees.map((lien) => lien.getAttribute('href'))).toEqual([
+      '#/fiches/Sco',
+      '#/fiches/Oph',
+    ])
   })
 
   it('réserves : résultat conditionnel et fuseau d’avant 1970', () => {

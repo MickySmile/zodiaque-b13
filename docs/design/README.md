@@ -36,7 +36,7 @@ Valeurs relevées dans le code source des planches : `jetons.md`.
 | --- | --- | --- | --- |
 | 1 | Le Serpentaire est le seul secteur coloré (ambre, rouge, or) | 1, 2, 5 | Même traitement que les 12 autres ; l'accent de couleur marque la sélection. L'accent reste permis dans les contenus de lancement |
 | 2 | Pictogramme dessiné (bâton et serpent) | 4, 5 | Glyphe ⛎ (U+26CE) monochrome, repli « Oph » ; ni caducée ni emblème |
-| 3 | Identité « Le savoir tenu avec responsabilité » | 4 | « La maîtrise révisable », identité retenue par l'étude (`docs/prd/02-serpentaire.md` § 5) |
+| 3 | Identité « Le savoir tenu avec responsabilité » | 4 | « La maîtrise révisable », identité retenue par l'étude (`docs/prd/02-serpentaire.md` § 5). Dans l'application, le sous-titre de la carte est l'opération du signe, pour les 13 ; « La maîtrise révisable » est la rubrique « Identité symbolique » de la fiche du Serpentaire (décision 0013, à confirmer par Micky) |
 | 4 | Le niveau 3 cite « éléments, maîtrises » | 3 | « Fonctions symboliques, ressources, tensions » |
 | 5 | Question d'introspection en Cormorant Garamond | 4 | Sérif réservé au titre de la fiche ; valeurs et textes longs en sans sérif |
 | 6 | Le témoin à 12 secteurs est appelé « tropical » | 1, 6, 7 | « Témoin 12 × 30° », jamais « thème tropical » |

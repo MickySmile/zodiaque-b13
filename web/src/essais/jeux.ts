@@ -13,6 +13,9 @@ import type {
   DataStatus,
   Place,
   Scenario,
+  SheetEntry,
+  SignSheet,
+  Signs,
   SunSignResult,
   WheelData,
   WheelSign,
@@ -207,6 +210,96 @@ export function calendrier(annee = 2000, statut: DataStatus = 'synthetic'): Cale
   }
 }
 
+const MANQUANTE: SheetEntry = {
+  status: 'missing',
+  text: null,
+  items: null,
+  table: null,
+  caveat: null,
+  closing: null,
+  source: null,
+  provenance: null,
+}
+
+function rubrique(texte: string, provenance: SheetEntry['provenance'] = ['C']): SheetEntry {
+  return { ...MANQUANTE, status: 'transcribed', text: texte, source: 'source d’essai § 1', provenance }
+}
+
+/**
+ * Fiches d'essai : des textes de remplissage, sans rapport avec le référentiel. Une fiche sur
+ * deux a des rubriques manquantes, pour éprouver leur affichage ; celle d'« Oph » est complète.
+ */
+export function fiches(statut: DataStatus = 'candidate'): Signs {
+  const signes: SignSheet[] = signesGeneres().map((signe, rang) => {
+    const complete = signe.sign_id === 'Oph' || rang % 2 === 0
+    const manquantes = complete ? [] : ['archetype', 'resources', 'forbidden_inferences']
+    return {
+      sign_id: signe.sign_id,
+      name: signe.name,
+      glyph: signe.glyph,
+      sheet_status: 'transcribed',
+      missing: manquantes,
+      epistemic_status: 'symbolic_proposal',
+      sheet: {
+        schema_version: 1,
+        sign_id: signe.sign_id,
+        name: signe.name,
+        operation: rubrique(`Opération d’essai de ${signe.sign_id}`),
+        archetype: complete ? rubrique(`Archétype d’essai de ${signe.sign_id}`) : MANQUANTE,
+        resources: complete ? rubrique(`Ressources d’essai de ${signe.sign_id}`) : MANQUANTE,
+        tensions: rubrique(`Tensions d’essai de ${signe.sign_id}`),
+        introspection_question: rubrique(`« Question d’essai de ${signe.sign_id} ? »`),
+        forbidden_inferences: complete
+          ? { ...rubrique(''), text: null, items: ['inférence d’essai une', 'inférence d’essai deux'] }
+          : MANQUANTE,
+        additional_sections: [
+          { ...rubrique(`Texte complémentaire de ${signe.sign_id}`), label: 'Rubrique en texte' },
+          {
+            ...rubrique('', ['H', 'M']),
+            text: null,
+            items: ['élément de liste un', 'élément de liste deux'],
+            label: 'Rubrique en liste',
+          },
+          {
+            ...rubrique(`Texte sous réserve de ${signe.sign_id}`),
+            caveat: 'réserve d’essai, à lire avant le texte',
+            closing: 'Phrase de clôture d’essai.',
+            label: 'Rubrique avec réserve',
+          },
+          {
+            ...rubrique(''),
+            text: null,
+            table: { columns: ['Colonne A', 'Colonne B'], rows: [['cellule 1', 'cellule 2']] },
+            label: 'Rubrique en tableau',
+          },
+        ],
+        historical_correspondences: {
+          active: false,
+          element: rang % 2 === 0 ? 'Catégorie d’essai' : null,
+          modality: rang % 2 === 0 ? 'groupe d’essai' : null,
+          domicile: rang % 2 === 0 ? 'Astre d’essai' : null,
+          source: 'source d’essai § 3',
+          provenance: ['H'],
+        },
+      },
+    }
+  })
+  return {
+    data_status: statut,
+    ruleset_version: 'référentiel-d-essai',
+    ruleset_sha256: 'empreinte-d-essai',
+    signs: signes,
+    rules: {
+      schema_version: 1,
+      common_rules: { ...rubrique(''), text: null, items: ['Règle commune d’essai.'] },
+      general_policy: rubrique('Politique générale d’essai.'),
+      inherited_categories_decision: rubrique('Décision d’essai sur les catégories héritées'),
+      historical_heritage: rubrique('Statut d’essai de l’héritage'),
+    },
+    manifest: { ...MANIFESTE, data_status: statut, symbolic_ruleset_version: 'référentiel-d-essai' },
+  }
+}
+
 export const LIEU_FICTIF: Place = {
   geoname_id: 1,
   name: 'Villefictive',
@@ -222,6 +315,7 @@ export const LIEU_FICTIF: Place = {
 export function clientEssai(remplacements: Partial<Api> = {}): Api {
   return {
     boundaries: async () => roue(),
+    signs: async () => fiches(),
     sunSign: async () => signeSolaire([{ signe: 'Leo' }]),
     calendar: async (annee) => calendrier(annee),
     searchPlaces: async () => ({
