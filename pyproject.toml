@@ -42,7 +42,7 @@ explicit_package_bases = true
 # Bibliothèques de calcul livrées sans annotations (pas de py.typed) : leurs valeurs sont
 # converties explicitement aux frontières du moteur.
 [[tool.mypy.overrides]]
-module = ["skyfield.*", "scipy.*", "jplephem.*"]
+module = ["skyfield.*", "scipy.*", "jplephem.*", "tzdata", "tzdata.*"]
 ignore_missing_imports = true
 
 [dependency-groups]

@@ -1,0 +1,51 @@
+{
+  "synthetic": true,
+  "description": "Jeu F5 : saisies fictives à Paris en 2026, autour des deux changements d'heure. Aucune donnée réelle.",
+  "cases": {
+    "nonexistent": {
+      "birth": {
+        "date_local": "2026-03-29",
+        "time_local": "02:30:00",
+        "time_status": "known",
+        "time_uncertainty_seconds": 0,
+        "timezone": "Europe/Paris",
+        "fold": null,
+        "latitude_deg": 48.8566,
+        "longitude_deg": 2.3522,
+        "altitude_m": 35,
+        "calendar": "proleptic_gregorian",
+        "source": "fictional_demonstration"
+      }
+    },
+    "ambiguous": {
+      "birth": {
+        "date_local": "2026-10-25",
+        "time_local": "02:30:00",
+        "time_status": "known",
+        "time_uncertainty_seconds": 0,
+        "timezone": "Europe/Paris",
+        "fold": null,
+        "latitude_deg": 48.8566,
+        "longitude_deg": 2.3522,
+        "altitude_m": 35,
+        "calendar": "proleptic_gregorian",
+        "source": "fictional_demonstration"
+      }
+    },
+    "ordinary": {
+      "birth": {
+        "date_local": "2026-06-01",
+        "time_local": "12:00:00",
+        "time_status": "known",
+        "time_uncertainty_seconds": 0,
+        "timezone": "Europe/Paris",
+        "fold": null,
+        "latitude_deg": 48.8566,
+        "longitude_deg": 2.3522,
+        "altitude_m": 35,
+        "calendar": "proleptic_gregorian",
+        "source": "fictional_demonstration"
+      }
+    }
+  }
+}
