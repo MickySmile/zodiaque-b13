@@ -22,6 +22,9 @@ Voies écartées :
 - rendre le calcul identique au bit près sur toutes les machines : cela demanderait de remplacer les fonctions mathématiques du système et celles de Skyfield, sans garantie ;
 - retirer le contrôle de l'intégration continue : on perdrait le filet contre une édition manuelle de `generes/`.
 
+## Écart mesuré
+Premier passage de l'intégration continue avec cette règle, le 15/11/2026 sur `main` (commit `d34aa10`, Linux x86_64) : écart maximal de **2,132 × 10⁻¹⁴°** entre le fichier régénéré et `generes/frontieres.csv`. La tolérance de 10⁻¹¹° laisse une marge d'un facteur 470 environ, et l'ordre de grandeur est bien celui du dernier chiffre d'un nombre en double précision.
+
 ## Conséquences
 - `generes/frontieres.csv` **fait foi**. Le moteur classera un astre en lisant les bornes de ce fichier, jamais en recalculant les frontières : un résultat ne dépendra donc pas de la machine (à faire en phase 5).
 - Les fichiers de `generes/` se régénèrent sur la machine de référence. Si elle change, ou si une mise à jour du système y déplace un dernier chiffre, la vérification stricte le signalera : il faudra régénérer et commiter.
