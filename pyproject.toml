@@ -5,6 +5,7 @@ description = "Thème natal à 13 signes, modèle B : écliptique J2000 fixe × 
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "certifi>=2026.10.23",
     "fastapi>=0.163.1",
     "numpy>=2.5.4",
     "pydantic>=2.14.3",

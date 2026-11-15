@@ -1,0 +1,37 @@
+{
+  "files": {},
+  "sources": {
+    "de440s": {
+      "bytes": 32726016,
+      "file": "de440s.bsp",
+      "last_modified": "Mon, 21 Dec 2020 19:39:26 GMT",
+      "retrieved_at": "2026-11-15T13:46:16Z",
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp"
+    },
+    "geonames-admin1": {
+      "bytes": 151571,
+      "file": "admin1CodesASCII.txt",
+      "last_modified": "Sun, 15 Nov 2026 03:39:51 GMT",
+      "retrieved_at": "2026-11-15T13:46:16Z",
+      "sha256": "2e4867f5397acb056ea26377601b57af37cb4c81399770225018e9e439e91ad3",
+      "url": "https://download.geonames.org/export/dump/admin1CodesASCII.txt"
+    },
+    "geonames-cities15000": {
+      "bytes": 3367585,
+      "file": "cities15000.zip",
+      "last_modified": "Sun, 15 Nov 2026 03:39:51 GMT",
+      "retrieved_at": "2026-11-15T13:46:16Z",
+      "sha256": "ce7a405587d6d68ee7ed78743770b42d663e0ef1971e6193a6c14e54f1af207e",
+      "url": "https://download.geonames.org/export/dump/cities15000.zip"
+    },
+    "iers-finals2000a": {
+      "bytes": 3777860,
+      "file": "finals2000A.all",
+      "last_modified": "Thu, 12 Nov 2026 18:05:28 GMT",
+      "retrieved_at": "2026-11-15T13:46:16Z",
+      "sha256": "51cb9676d9c4775c4d344b328bc3eb1ac3940b089ce4b659ccac883637d09dd6",
+      "url": "https://datacenter.iers.org/products/eop/rapid/standard/finals2000A.all"
+    }
+  }
+}
