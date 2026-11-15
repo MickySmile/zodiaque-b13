@@ -1,9 +1,10 @@
 #!/bin/bash
-# .claude/hooks/garde-fou.sh — hook PreToolUse sur Bash (gabarit G7, étendu).
+# .claude/hooks/garde-fou.sh — hook PreToolUse sur Bash (gabarit G7, étendu ; révisé par la décision 0006).
 # Bloque, y compris sous les formes /bin/rm, bash -c '…', 'rm' ou git -C . … :
 #   1. les suppressions récursives ;
 #   2. les envois forcés vers le dépôt distant (l'envoi simple reste soumis à la règle ask) ;
-#   3. le contournement du hook Git pre-commit (--no-verify, -n, SKIP=, core.hooksPath, .git/hooks) ;
+#   3. le contournement du hook Git pre-commit (--no-verify et ses abréviations, -n, SKIP=,
+#      core.hooksPath quelle que soit la casse, .git/hooks) ;
 #   4. l'exécution directe d'un script téléchargé (curl … | sh) ;
 #   5. sudo.
 # Code de sortie 2 : l'appel est bloqué et le message revient à Claude, même si une règle allow correspond.
@@ -18,11 +19,16 @@ COMMAND=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 # Début de mot : début de ligne ou caractère qui n'est ni lettre, ni chiffre, ni « _ », ni « / » final d'un chemin.
 B='(^|[^[:alnum:]_.-])'
 Q="[\"']?"
+# Fin d'une option courte : fin de ligne ou caractère qui ne la prolonge pas (espace, guillemet, « ; », « & », « ) »…).
+F='([^[:alnum:]_-]|$)'
 
 RM_RE="${B}rm${Q}[[:space:]](.*[[:space:]])?${Q}(-[[:alpha:]]*[rR]|--recursive)"
 FORCE_PUSH_RE="${B}git${Q}[[:space:]](.*[[:space:]])?${Q}push${Q}[[:space:]](.*[[:space:]])?(--force|--force-with-lease|-[[:alpha:]]*f|\+[[:alnum:]_/.-]+)"
-NO_VERIFY_RE="${B}git${Q}[[:space:]](.*[[:space:]])?${Q}(commit|merge|push|am|rebase)${Q}[[:space:]](.*[[:space:]])?(--no-verify|-[[:alpha:]]*n[[:alpha:]]*)([[:space:]]|$)"
-HOOKS_RE="(core\.hooksPath|\.git/hooks|pre-commit${Q}[[:space:]]+uninstall|(^|[[:space:];&|])SKIP=|PRE_COMMIT_ALLOW_NO_CONFIG)"
+# « --no-v… » couvre --no-verify et ses abréviations acceptées par Git (--no-veri, --no-verif), sans exiger d'espace après.
+NO_VERIFY_RE="${B}git${Q}[[:space:]](.*[[:space:]])?${Q}(commit|merge|push|am|rebase)${Q}[[:space:]](.*[[:space:]])?(--no-v|-[[:alpha:]]*n[[:alpha:]]*${F})"
+HOOKS_RE="(\.git/hooks|pre-commit${Q}[[:space:]]+uninstall|(^|[[:space:];&|])SKIP=|PRE_COMMIT_ALLOW_NO_CONFIG)"
+# Git ignore la casse des clés de configuration : comparé sans tenir compte de la casse (grep -i).
+HOOKS_PATH_RE="hookspath"
 PIPE_SH_RE="${B}(curl|wget)${Q}[[:space:]].*\|[[:space:]]*(sudo[[:space:]]+)?((ba|z|da)?sh|python3?|node)([[:space:]]|$)"
 SUDO_RE="${B}sudo${Q}([[:space:]]|$)"
 
@@ -32,6 +38,7 @@ printf '%s\n' "$COMMAND" | grep -Eq "$RM_RE" && bloque "suppression récursive i
 printf '%s\n' "$COMMAND" | grep -Eq "$FORCE_PUSH_RE" && bloque "envoi forcé interdit. Micky gère l'historique distant."
 printf '%s\n' "$COMMAND" | grep -Eq "$NO_VERIFY_RE" && bloque "le hook pre-commit ne se contourne pas. Corrige ce que scripts/verifier.sh signale."
 printf '%s\n' "$COMMAND" | grep -Eq "$HOOKS_RE" && bloque "le hook Git pre-commit et sa configuration ne se modifient pas depuis Claude Code."
+printf '%s\n' "$COMMAND" | grep -Eiq "$HOOKS_PATH_RE" && bloque "le hook Git pre-commit et sa configuration ne se modifient pas depuis Claude Code."
 printf '%s\n' "$COMMAND" | grep -Eq "$PIPE_SH_RE" && bloque "pas d'exécution directe d'un script téléchargé. Passe par scripts/telecharger.py et donnees/sources.toml."
 printf '%s\n' "$COMMAND" | grep -Eq "$SUDO_RE" && bloque "sudo interdit. Demande à Micky de lancer la commande lui-même."
 
