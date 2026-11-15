@@ -1,0 +1,56 @@
+@import "./styles/jetons.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--police-texte);
+  font-size: 100%;
+  line-height: 1.5;
+  color: var(--texte);
+  background: var(--fond);
+}
+
+body {
+  margin: 0;
+  min-width: 360px;
+}
+
+a {
+  color: var(--lien);
+}
+
+a:hover {
+  color: var(--lien-survol);
+}
+
+.page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.page h1 {
+  margin: 0 0 1rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.statut {
+  display: inline-block;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon-controle);
+  background: var(--surface);
+  font-family: var(--police-mono);
+  font-size: 0.875rem;
+}
+
+.note {
+  margin: 0;
+  color: var(--texte-secondaire);
+}

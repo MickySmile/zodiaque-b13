@@ -45,9 +45,13 @@ def sources(sans_donnees: bool) -> tuple[list[str], list[str]]:
         if not chemin.exists():
             avis.append(f"{nom} : pas encore téléchargé (lance /donnees)")
         elif not attendu:
-            echecs.append(f"{nom} : empreinte non renseignée dans donnees/sources.toml (lance /donnees, Micky valide)")
+            echecs.append(
+                f"{nom} : empreinte non renseignée dans donnees/sources.toml (lance /donnees, Micky valide)"
+            )
         elif sha256(chemin) != attendu:
-            echecs.append(f"{nom} : empreinte différente de donnees/sources.toml ; fichier modifié ou corrompu")
+            echecs.append(
+                f"{nom} : empreinte différente de donnees/sources.toml ; fichier modifié ou corrompu"
+            )
     return echecs, avis
 
 
@@ -55,17 +59,23 @@ def generes() -> list[str]:
     echecs: list[str] = []
     if not GENERES.exists():
         return echecs
-    presents = {p.relative_to(GENERES).as_posix() for p in GENERES.rglob("*") if p.is_file()} - HORS_MANIFESTE
+    presents = {
+        p.relative_to(GENERES).as_posix() for p in GENERES.rglob("*") if p.is_file()
+    } - HORS_MANIFESTE
     manifeste = GENERES / "manifest.json"
     if not manifeste.exists():
-        return [f"generes/{p} : aucun generes/manifest.json pour l'attester" for p in sorted(presents)]
+        return [
+            f"generes/{p} : aucun generes/manifest.json pour l'attester" for p in sorted(presents)
+        ]
     declares = json.loads(manifeste.read_text(encoding="utf-8")).get("files", {})
     for nom, info in declares.items():
         chemin = GENERES / nom
         if not chemin.exists():
             echecs.append(f"generes/{nom} : déclaré dans le manifeste mais absent")
         elif sha256(chemin) != info.get("sha256"):
-            echecs.append(f"generes/{nom} : empreinte différente du manifeste ; régénère avec le script, jamais à la main")
+            echecs.append(
+                f"generes/{nom} : empreinte différente du manifeste ; régénère avec le script, jamais à la main"
+            )
     for nom in sorted(presents - set(declares)):
         echecs.append(f"generes/{nom} : absent du manifeste")
     return echecs

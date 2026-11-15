@@ -1,0 +1,49 @@
+[project]
+name = "zodiaque-b13"
+version = "0.1.0"
+description = "Thème natal à 13 signes, modèle B : écliptique J2000 fixe × frontières UAI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.163.1",
+    "numpy>=2.5.4",
+    "pydantic>=2.14.3",
+    "scipy>=1.18.1",
+    "skyfield>=1.55",
+    "timezonefinder>=9.2.0",
+    "tzdata>=2026.6",
+    "uvicorn>=0.54.0",
+]
+
+# Application, pas bibliothèque : les paquets `moteur` et `api` sont à la racine et ne sont pas
+# installés. pytest, uvicorn et mypy les trouvent depuis la racine du dépôt.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--strict-markers"
+markers = [
+    "donnees: test qui exige les fichiers de donnees/telechargees/ (exclu en CI)",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+
+# Bibliothèques de calcul livrées sans annotations (pas de py.typed) : leurs valeurs sont
+# converties explicitement aux frontières du moteur.
+[[tool.mypy.overrides]]
+module = ["skyfield.*", "scipy.*", "jplephem.*"]
+ignore_missing_imports = true
+
+[dependency-groups]
+dev = [
+    "hypothesis>=6.170.15",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "ruff>=0.17.5",
+]

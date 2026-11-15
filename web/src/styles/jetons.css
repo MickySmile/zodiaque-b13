@@ -1,0 +1,101 @@
+/*
+ * Jetons de design — transcrits de docs/design/jetons.md (relevé du 15/11/2026).
+ * Un composant n'utilise jamais une couleur ou une police en dur : il passe par ces variables.
+ * Les valeurs marquées « à relever » dans jetons.md ne sont pas définies ici : voir la fin du fichier.
+ */
+
+:root {
+  /* Polices (Fontsource, auto-hébergées) */
+  --police-texte: "Inter", system-ui, sans-serif;
+  --police-mono: "IBM Plex Mono", ui-monospace, monospace;
+  /* Glyphes des signes et des astres : avant toute police emoji ; U+FE0E après chaque glyphe. */
+  --police-glyphes: "Noto Sans Symbols", "Noto Sans Symbols 2", sans-serif;
+  --police-titre-sombre: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --police-titre-fiche: "Cormorant Garamond", serif;
+
+  /* Thème clair, défaut (planche 7) */
+  --fond: #eef0f5;
+  --surface: #ffffff;
+  --bordure: #d5d9e4;
+  --texte: #1e2233;
+  --texte-secondaire: #5a6075;
+  --lien: #2f5fb0;
+  --lien-survol: #1e3f78;
+  --rayon-controle: 10px;
+  --rayon-carte: 14px;
+  --trait-frontiere: #1e2233;
+  --trait-frontiere-epaisseur: 2px;
+
+  /*
+   * Remplissage des 13 secteurs, thème clair. Ordre déduit du tracé de la planche, à confirmer.
+   * Ces couleurs identifient les signes et n'encodent aucune catégorie ; le glyphe et le nom
+   * les accompagnent toujours.
+   */
+  --secteur-ari: #f4c7c3;
+  --secteur-tau: #f6d7b0;
+  --secteur-gem: #f3e6a6;
+  --secteur-cnc: #d9e8b0;
+  --secteur-leo: #bfe3c6;
+  --secteur-vir: #b5e0dd;
+  --secteur-lib: #b9d3ee;
+  --secteur-sco: #c6c6f0;
+  --secteur-oph: #d9c3ec;
+  --secteur-sgr: #ebc2df;
+  --secteur-cap: #e8cfc0;
+  --secteur-aqr: #cfe0d8;
+  --secteur-psc: #d6d9e4;
+
+  /* Badges de statut, piste Pédagogique (planche 3). Jamais la couleur seule : numéro et libellé. */
+  --badge-page-fond: #eef2ef;
+  --badge-accent: #9fd3c1;
+  --badge-rayon: 6px;
+  --badge-1-fond: #0f2a24;
+  --badge-1-texte: #ffffff;
+  --badge-1-texte-secondaire: #c7d9d2;
+  --badge-2-fond: #1f5a4c;
+  --badge-2-texte: #ffffff;
+  --badge-2-texte-secondaire: #c7d9d2;
+  --badge-3-fond: #cfe3da;
+  --badge-3-texte: #0f2a24;
+  --badge-3-texte-secondaire: #36524a;
+  --badge-4-fond: #ffffff;
+  --badge-4-bordure: #0f2a24;
+  --badge-4-bordure-epaisseur: 2px;
+  --badge-4-texte: #0f2a24;
+  --badge-4-texte-secondaire: #36524a;
+
+  /* Fiches de signe, piste Carte (planche 4). Même gabarit pour les 13 signes. */
+  --carte-fond: #1e1630;
+  --carte-encart: #2a2042;
+  --carte-or: #d9b56a;
+  --carte-or-epaisseur: 1.5px;
+  --carte-texte: #efe8f5;
+  --carte-texte-secondaire: #cfc4dc;
+  --carte-texte-discret: #a99cbd;
+  --carte-filet: #4a3d63;
+  --carte-rayon: 14px;
+  --carte-encart-rayon: 10px;
+
+  /* Comparateur, piste Suisse (planche 2). L'accent marque une différence, jamais un signe. */
+  --suisse-fond: #ffffff;
+  --suisse-texte: #111111;
+  --suisse-accent: #e4502a;
+  --suisse-filet: #111111;
+  --suisse-filet-epaisseur: 3px;
+}
+
+/* Thème sombre, piste Observatoire (planche 1). Activé par data-theme="sombre" sur <html>. */
+:root[data-theme="sombre"] {
+  --fond: #0e1726;
+  --texte: #e8ecf2;
+  --texte-secondaire: #c9d2df;
+  --texte-discret: #9aa6b8;
+  --trait: #33465f;
+}
+
+/*
+ * Non définis, faute de valeur dans jetons.md (à relever sur les planches, puis à ajouter ici) :
+ *   --accent-selection        ambre de la sélection, thème sombre ;
+ *   --secteur-* du thème sombre  13 couleurs à définir pour un contraste AA sur #0e1726 ;
+ *   --surface, --bordure, --lien du thème sombre.
+ */

@@ -23,23 +23,58 @@ DEPENDANCES_INTERDITES = re.compile(
 
 # B. Vocabulaire de l'interface (onglets Serpentaire et Conséquences, écarts des planches).
 VOCABULAIRE_INTERDIT = [
-    (re.compile(r"\b(th[eè]me|roue|mode|d[ée]coupage|signe|vue)s?\s+tropica", re.IGNORECASE),
-     "le découpage de comparaison s'appelle « témoin 12 × 30° »"),
-    (re.compile(r"[\"'>]\s*Tropical\s*[\"'<]"), "étiquette « Tropical » : écrire « témoin 12 × 30° »"),
-    (re.compile(r"ma[iî]tre(sse)?\s+du\s+th[eè]me", re.IGNORECASE), "déduction abandonnée : maître du thème"),
-    (re.compile(r"signe\s+oppos[ée]", re.IGNORECASE), "l'opposition se calcule par arcs, jamais par le nom du signe"),
-    (re.compile(r"dominante\s+d'[ée]l[ée]ment", re.IGNORECASE), "catégorie héritée inactive : élément"),
-    (re.compile(r"signes?\s+(de\s+feu|d'eau|de\s+terre|d'air)", re.IGNORECASE), "catégorie héritée inactive : élément"),
-    (re.compile(r"zone\s+de\s+cuspide", re.IGNORECASE), "aucune zone de cuspide : début inclus, fin exclue"),
-    (re.compile(r"m[êe]me\s+[ée]l[ée]ment", re.IGNORECASE), "catégorie héritée inactive : accord « par élément »"),
-    (re.compile(r"vous\s+pensiez\s+[êe]tre", re.IGNORECASE), "formulation à remplacer (Conséquences § 8) : « dans le référentiel à douze signes… »"),
-    (re.compile(r"compatibilit[ée]", re.IGNORECASE), "l'arc opposé n'est jamais nommé « compatibilité » (FR-11)"),
-    (re.compile(r"votre\s+destin|vous\s+[êe]tes\s+destin[ée]", re.IGNORECASE), "aucune affirmation déterministe"),
+    (
+        re.compile(r"\b(th[eè]me|roue|mode|d[ée]coupage|signe|vue)s?\s+tropica", re.IGNORECASE),
+        "le découpage de comparaison s'appelle « témoin 12 × 30° »",
+    ),
+    (
+        re.compile(r"[\"'>]\s*Tropical\s*[\"'<]"),
+        "étiquette « Tropical » : écrire « témoin 12 × 30° »",
+    ),
+    (
+        re.compile(r"ma[iî]tre(sse)?\s+du\s+th[eè]me", re.IGNORECASE),
+        "déduction abandonnée : maître du thème",
+    ),
+    (
+        re.compile(r"signe\s+oppos[ée]", re.IGNORECASE),
+        "l'opposition se calcule par arcs, jamais par le nom du signe",
+    ),
+    (
+        re.compile(r"dominante\s+d'[ée]l[ée]ment", re.IGNORECASE),
+        "catégorie héritée inactive : élément",
+    ),
+    (
+        re.compile(r"signes?\s+(de\s+feu|d'eau|de\s+terre|d'air)", re.IGNORECASE),
+        "catégorie héritée inactive : élément",
+    ),
+    (
+        re.compile(r"zone\s+de\s+cuspide", re.IGNORECASE),
+        "aucune zone de cuspide : début inclus, fin exclue",
+    ),
+    (
+        re.compile(r"m[êe]me\s+[ée]l[ée]ment", re.IGNORECASE),
+        "catégorie héritée inactive : accord « par élément »",
+    ),
+    (
+        re.compile(r"vous\s+pensiez\s+[êe]tre", re.IGNORECASE),
+        "formulation à remplacer (Conséquences § 8) : « dans le référentiel à douze signes… »",
+    ),
+    (
+        re.compile(r"compatibilit[ée]", re.IGNORECASE),
+        "l'arc opposé n'est jamais nommé « compatibilité » (FR-11)",
+    ),
+    (
+        re.compile(r"votre\s+destin|vous\s+[êe]tes\s+destin[ée]", re.IGNORECASE),
+        "aucune affirmation déterministe",
+    ),
     (re.compile("⛎️"), "⛎ en présentation emoji : utiliser U+FE0E ou aucun sélecteur"),
 ]
 
 # B bis. Référentiel : catégories héritées seulement sous historical_correspondences (active: false).
-CLE_HERITEE = re.compile(r"^(\s*)-?\s*(element|elements|modality|modalities|ruler|rulers|rulership|dignity|dignities|domicile|exaltation|detriment|fall)\s*:", re.IGNORECASE)
+CLE_HERITEE = re.compile(
+    r"^(\s*)-?\s*(element|elements|modality|modalities|ruler|rulers|rulership|dignity|dignities|domicile|exaltation|detriment|fall)\s*:",
+    re.IGNORECASE,
+)
 CLE_YAML = re.compile(r"^(\s*)-?\s*([A-Za-z_][\w-]*)\s*:")
 BLOC_HISTORIQUE = "historical_correspondences"
 
@@ -50,7 +85,17 @@ LISTE = re.compile(r"[\[(]([^\[\]()]{20,})[\])]", re.DOTALL)
 SEUIL_ANGLES = 13
 
 SOURCES = (".py", ".ts", ".tsx", ".js", ".jsx")
-IGNORES = {"node_modules", ".venv", "dist", "generes", "__pycache__", ".git", "tests", "e2e", "verifications"}
+IGNORES = {
+    "node_modules",
+    ".venv",
+    "dist",
+    "generes",
+    "__pycache__",
+    ".git",
+    "tests",
+    "e2e",
+    "verifications",
+}
 
 
 def fichiers(base: str, suffixes: tuple[str, ...]) -> list[Path]:
@@ -58,7 +103,8 @@ def fichiers(base: str, suffixes: tuple[str, ...]) -> list[Path]:
     if not racine.exists():
         return []
     return [
-        p for p in racine.rglob("*")
+        p
+        for p in racine.rglob("*")
         if p.is_file()
         and p.suffix in suffixes
         and not IGNORES.intersection(p.relative_to(RACINE).parts)
@@ -99,7 +145,9 @@ def dependances() -> list[str]:
         noms += [(k.rsplit("node_modules/", 1)[-1], chemin) for k in data.get("packages", {}) if k]
     for nom, source in noms:
         if nom and nom != NOM_PROJET and DEPENDANCES_INTERDITES.search(nom):
-            constats.append(f"{source} : dépendance interdite « {nom} » (bibliothèque d'astrologie)")
+            constats.append(
+                f"{source} : dépendance interdite « {nom} » (bibliothèque d'astrologie)"
+            )
     return constats
 
 
@@ -121,7 +169,9 @@ def referentiel() -> list[str]:
     constats: list[str] = []
     for f in fichiers("referentiel", (".yaml", ".yml")):
         pile: list[tuple[int, str]] = []  # (indentation, clé) des ancêtres
-        for n, texte in enumerate(f.read_text(encoding="utf-8", errors="replace").splitlines(), start=1):
+        for n, texte in enumerate(
+            f.read_text(encoding="utf-8", errors="replace").splitlines(), start=1
+        ):
             if not texte.strip() or texte.lstrip().startswith("#"):
                 continue
             m = CLE_YAML.match(texte)
@@ -130,10 +180,14 @@ def referentiel() -> list[str]:
                 pile.pop()
             historique = any(cle == BLOC_HISTORIQUE for _, cle in pile)
             if m and m.group(2) == BLOC_HISTORIQUE and "active: true" in texte:
-                constats.append(f"{f.relative_to(RACINE)}:{n} : {BLOC_HISTORIQUE} doit rester inactif")
+                constats.append(
+                    f"{f.relative_to(RACINE)}:{n} : {BLOC_HISTORIQUE} doit rester inactif"
+                )
             if not historique:
                 if CLE_HERITEE.match(texte):
-                    constats.append(f"{f.relative_to(RACINE)}:{n} : catégorie héritée hors de {BLOC_HISTORIQUE}")
+                    constats.append(
+                        f"{f.relative_to(RACINE)}:{n} : catégorie héritée hors de {BLOC_HISTORIQUE}"
+                    )
                 for motif, raison in VOCABULAIRE_INTERDIT:
                     if motif.search(texte):
                         constats.append(f"{f.relative_to(RACINE)}:{n} : {raison}")
@@ -149,7 +203,9 @@ def valeurs_recopiees() -> list[str]:
             texte = f.read_text(encoding="utf-8", errors="replace")
             rel = f.relative_to(RACINE)
             for m in LARGEUR_FICTIVE.finditer(texte):
-                constats.append(f"{rel}:{ligne(texte, m.start())} : largeur fictive des planches (248°–267°)")
+                constats.append(
+                    f"{rel}:{ligne(texte, m.start())} : largeur fictive des planches (248°–267°)"
+                )
             if f.suffix not in SOURCES:
                 continue
             for m in LISTE.finditer(texte):
@@ -183,8 +239,12 @@ def jeux_essai() -> list[str]:
                 data = json.loads(f.read_text(encoding="utf-8"))
             except (json.JSONDecodeError, UnicodeDecodeError):
                 continue
-            if contient_cle(data, "birth") and not (isinstance(data, dict) and data.get("synthetic") is True):
-                constats.append(f"{f.relative_to(RACINE)} : données de naissance sans \"synthetic\": true")
+            if contient_cle(data, "birth") and not (
+                isinstance(data, dict) and data.get("synthetic") is True
+            ):
+                constats.append(
+                    f'{f.relative_to(RACINE)} : données de naissance sans "synthetic": true'
+                )
     return constats
 
 
@@ -193,7 +253,9 @@ def main() -> int:
     for c in constats:
         print(f"  ✘ {c}")
     if constats:
-        print(f"{len(constats)} constat(s). Corrige la cause ; ce fichier ne se modifie pas depuis Claude Code.")
+        print(
+            f"{len(constats)} constat(s). Corrige la cause ; ce fichier ne se modifie pas depuis Claude Code."
+        )
         return 1
     print("  Aucun constat.")
     return 0
