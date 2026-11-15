@@ -1,0 +1,13 @@
+# Hook Git pre-commit : rejoue scripts/verifier.sh avant chaque commit, fait par Claude ou à la main.
+# Installation (par Micky, dans son terminal, une fois par clone) : brew install pre-commit && pre-commit install
+# Hook local uniquement : aucun téléchargement de dépôt de hooks tiers.
+repos:
+  - repo: local
+    hooks:
+      - id: verifier
+        name: Contrôles du dépôt (scripts/verifier.sh)
+        entry: scripts/verifier.sh --commit
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit]

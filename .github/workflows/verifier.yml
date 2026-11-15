@@ -1,0 +1,32 @@
+# Rejoue scripts/verifier.sh à chaque envoi et chaque pull request : filet de sécurité si un commit
+# a échappé au hook pre-commit. Aucune donnée téléchargée ici (mode --ci) : les frontières, qui ne
+# dépendent que de Skyfield, sont régénérées et comparées à generes/.
+name: Vérifier
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+        if: hashFiles('web/package-lock.json') != ''
+      - name: Installer les dépendances Python
+        if: hashFiles('pyproject.toml') != ''
+        run: uv sync --locked
+      - name: Contrôles
+        run: scripts/verifier.sh --ci

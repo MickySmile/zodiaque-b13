@@ -1,0 +1,71 @@
+# donnees/sources.toml — registre des données téléchargées (régime « mesure » : prises telles quelles).
+#
+# Règles :
+# - Seul scripts/telecharger.py écrit dans donnees/telechargees/ (ou $B13_DONNEES), et seulement depuis ce registre.
+# - sha256 vide = pas encore figé. Au premier téléchargement, /donnees calcule l'empreinte et propose
+#   de l'écrire ici ; la modification de ce fichier demande l'accord de Micky (règle ask).
+# - Une empreinte figée ne change que par une décision datée dans docs/decisions/ (nouvelle version de la donnée).
+# - type = "paquet" : fourni par une dépendance Python ; version et empreinte relevées dans le manifeste à l'exécution.
+# - Vérifié par scripts/verifications/integrite.py (skill verify, hook pre-commit, CI).
+
+[[source]]
+id = "de440s"
+fichier = "de440s.bsp"
+url = "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp"
+miroir = "https://ssd.jpl.nasa.gov/ftp/eph/planets/bsp/de440s.bsp"
+sha256 = ""
+taille_approx = "32 Mo"
+couverture = "1849–2150"
+licence = "Diffusion par le JPL (NASA) ; conditions à confirmer ⚠️"
+usage = "Positions astrométriques des 10 objets, passages du Soleil"
+
+[[source]]
+id = "iers-finals2000a"
+fichier = "finals2000A.all"
+url = "https://datacenter.iers.org/products/eop/rapid/standard/finals2000A.all"
+miroir = "https://maia.usno.navy.mil/ser7/finals2000A.all"
+sha256 = ""
+taille_approx = "3,5 Mo"
+licence = "Données IERS ; conditions à confirmer ⚠️"
+usage = "UT1−UTC et orientation de la Terre (angles, maisons). Fichier mis à jour chaque semaine par l'IERS : une copie est figée, sa date va au manifeste"
+
+[[source]]
+id = "geonames-cities15000"
+fichier = "cities15000.zip"
+url = "https://download.geonames.org/export/dump/cities15000.zip"
+sha256 = ""
+taille_approx = "quelques Mo"
+licence = "CC BY 4.0 — attribution « GeoNames » affichée dans l'application"
+usage = "Recherche de lieu hors ligne, localités de plus de 15 000 habitants (choix de Micky, 15/11/2026) ; pour un lieu plus petit, saisie des coordonnées"
+
+[[source]]
+id = "geonames-admin1"
+fichier = "admin1CodesASCII.txt"
+url = "https://download.geonames.org/export/dump/admin1CodesASCII.txt"
+sha256 = ""
+taille_approx = "150 ko"
+licence = "CC BY 4.0"
+usage = "Noms des régions pour désambiguïser les lieux homonymes"
+
+[[source]]
+id = "frontieres-uai"
+type = "paquet"
+fichier = "constellations.npz"
+fourni_par = "skyfield (load_constellation_map)"
+licence = "MIT (Skyfield) ; données Roman 1987, catalogue CDS VI/42"
+usage = "Frontières UAI (Delporte), réalisation Skyfield / Roman, grille équatoriale B1875"
+
+[[source]]
+id = "tzdata"
+type = "paquet"
+fourni_par = "tzdata (PyPI)"
+licence = "Apache-2.0 ; base IANA dans le domaine public"
+usage = "Fuseaux historiques par identifiant IANA ; version au manifeste"
+
+# Option pour la porte G1 : seconde réalisation des frontières (numérisation de Delporte par P. Barbier).
+# À ajouter seulement après accord de Micky sur l'URL et la licence ⚠️ :
+# [[source]]
+# id = "frontieres-barbier"
+# fichier = ""
+# url = ""
+# sha256 = ""

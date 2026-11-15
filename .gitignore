@@ -1,0 +1,32 @@
+# Claude Code : fichiers personnels
+CLAUDE.local.md
+.claude/settings.local.json
+.claude/agent-memory-local/
+
+# Secrets (aucun au MVP ; .env reste illisible pour Claude)
+.env
+.env.*
+
+# Données téléchargées : volumineuses, contrôlées par donnees/sources.toml
+donnees/telechargees/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+
+# Front
+web/node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+
+# Captures des vérifications d'interface
+captures/
+
+# Système
+.DS_Store

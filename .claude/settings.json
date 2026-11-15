@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "disableBypassPermissionsMode": "disable",
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Edit(./docs/prd/**)",
+      "Edit(./docs/portes.toml)",
+      "Edit(./.claude/settings.json)",
+      "Edit(./.claude/hooks/**)",
+      "Edit(./.pre-commit-config.yaml)",
+      "Edit(./scripts/verifier.sh)",
+      "Edit(./scripts/verifications/**)",
+      "Edit(./.github/workflows/**)",
+      "Edit(./.git/hooks/**)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git commit --no-verify *)",
+      "Bash(git commit -n *)",
+      "Bash(git config core.hooksPath *)",
+      "Bash(pre-commit uninstall *)",
+      "Bash(sudo *)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(uv add *)",
+      "Bash(uv pip install *)",
+      "Bash(npm install *)",
+      "Bash(npm i *)",
+      "Bash(npx -y *)",
+      "Bash(dangerouslyDisableSandbox:true)",
+      "Edit(./donnees/sources.toml)",
+      "Edit(./generes/**)"
+    ],
+    "allow": [
+      "Bash(uv sync *)",
+      "Bash(uv run *)",
+      "Bash(npm ci *)",
+      "Bash(npm run *)",
+      "Bash(npm --prefix web *)",
+      "Bash(npx playwright *)",
+      "Bash(scripts/verifier.sh *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "WebFetch(domain:rhodesmill.org)",
+      "WebFetch(domain:playwright.dev)",
+      "WebFetch(domain:react.dev)",
+      "WebFetch(domain:vite.dev)",
+      "WebFetch(domain:fastapi.tiangolo.com)",
+      "WebFetch(domain:developer.mozilla.org)",
+      "WebFetch(domain:code.claude.com)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/garde-fou.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache/uv",
+        "~/.local/share/uv",
+        "~/.npm",
+        "~/Library/Caches/ms-playwright",
+        "~/.cache/pre-commit"
+      ],
+      "denyRead": [
+        "~/.ssh",
+        "~/.aws",
+        "~/.config/gh"
+      ]
+    },
+    "network": {
+      "allowedDomains": [
+        "pypi.org",
+        "files.pythonhosted.org",
+        "registry.npmjs.org",
+        "github.com",
+        "objects.githubusercontent.com",
+        "release-assets.githubusercontent.com",
+        "naif.jpl.nasa.gov",
+        "ssd.jpl.nasa.gov",
+        "datacenter.iers.org",
+        "maia.usno.navy.mil",
+        "download.geonames.org",
+        "cdn.playwright.dev",
+        "playwright.download.prss.microsoft.com"
+      ],
+      "allowLocalBinding": true
+    }
+  }
+}

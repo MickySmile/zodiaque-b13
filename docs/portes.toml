@@ -1,0 +1,24 @@
+# docs/portes.toml — état des portes du PRD (§ 8). Décision humaine : seul Micky modifie ce fichier
+# (deny Edit pour Claude Code). Les scripts le lisent et recopient l'état dans generes/manifest.json ;
+# l'API et l'interface en déduisent le statut affiché (« candidat » tant que G1 est fermée).
+
+[g1]
+intitule = "13 / 13 frontières vérifiées indépendamment"
+franchie = false
+validee_par = ""   # expert astronome (question Q5 du PRD)
+date = ""
+rapport = ""       # chemin du rapport produit par /frontieres, ex. docs/portes/g1-rapport.md
+
+[g2]
+intitule = "10 / 10 thèmes de référence concordants"
+franchie = false
+validee_par = ""
+date = ""
+rapport = ""
+
+[g3]
+intitule = "Portrait 100 % traçable, 5 / 5 tests de mutation"
+franchie = false
+validee_par = ""
+date = ""
+rapport = ""
