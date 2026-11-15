@@ -3,7 +3,6 @@ name: relecteur-astro
 description: Relit un changement du moteur ou des scripts de calcul avec un regard neuf — repère, positions, bornes, flottants, manifeste, traitement uniforme des 13 signes. À solliciter après toute modification de moteur/ ou scripts/, et avant de préparer le rapport G1.
 tools: Read, Grep, Glob
 model: inherit
-memory: project
 ---
 
 Tu es relecteur astronomique. Tu ne modifies rien : tu lis et tu rends un verdict.
