@@ -34,3 +34,6 @@ Les motifs de suppression récursive, d'envoi forcé, de script téléchargé et
 - T5 est rejoué par Claude avec les formes nouvelles, pour de vrai cette fois : chacune doit revenir « Bloqué par .claude/hooks/garde-fou.sh ».
 - Point laissé à Micky : la protection de `.git/hooks` par le sandbox n'a jamais été observée, le hook ayant toujours arrêté la commande avant. Un essai inoffensif (`cd .git` puis `touch hooks/essai`) le dirait ; Claude ne le lance pas sans accord.
 - Le fichier de cas mérite peut-être une place durable dans le dépôt plutôt que dans `tmp-test/` ; à décider en phase 2, quand `tests/` existera.
+
+## Mise à jour du 15/11/2026, clôture de la phase 1
+`tmp-test/` est supprimé. Le fichier de cas et le script de rejeu sont dans `tests/garde-fou/` ; la copie du hook n'est pas gardée, le hook installé faisant foi. Le contrôle hors ligne se rejoue ainsi : `bash tests/garde-fou/jouer-cas.sh "$PWD/.claude/hooks/garde-fou.sh" tests/garde-fou/cas.txt`. Il n'est pas encore appelé par `scripts/verifier.sh`, fichier protégé : à brancher par Micky s'il le souhaite.
