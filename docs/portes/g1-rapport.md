@@ -163,6 +163,7 @@ Aucune de ces deux comparaisons ne porte sur la grille des constellations. Si la
 | Sondage dense (0,1°, dichotomie à 10⁻⁸°) | 13 changements, chacun encadre une frontière analytique |
 | Milieux et voisins des intervalles par le repère nommé de Skyfield | même constellation, 13 fois sur 13 |
 | Régénération sur la machine de calcul | CSV identique octet pour octet (`--verifier`) |
+| Régénération sur une autre machine | bornes comparées à 10⁻¹¹° près, signes et ordre exacts (décision 0009) |
 
 Ces contrôles vérifient la cohérence interne. Le sondage dense et le repère nommé reposent sur la même grille que le calcul principal : ils écartent une erreur d'algèbre, pas une erreur de la grille. Le sondage au pas de 0,1° ne prouve pas l'exhaustivité : une constellation plus étroite que le pas pourrait lui échapper, et seule l'énumération analytique de toutes les lignes la garantit.
 
@@ -192,7 +193,7 @@ Ces contrôles vérifient la cohérence interne. Le sondage dense et le repère 
 4. **Modèle de précession.** Skyfield ramène les directions à B1875 par sa précession moderne. Delporte et Roman travaillaient avec celle de leur temps. L'effet de cet écart sur un siècle et quart n'a pas été chiffré.
 5. **Seconde chaîne partielle.** Voir la section 5.3 : Horizons valide les positions et le repère, pas la grille.
 6. **Une seule année, un seul astre.** La comparaison de positions porte sur le Soleil en 2026. Les frontières elles-mêmes ne dépendent pas de la date, le repère étant fixe.
-7. **Reproductibilité entre machines.** La régénération est identique sur la machine de calcul (macOS, x86_64). Le dernier chiffre d'un résultat en double précision dépend de la bibliothèque mathématique et d'algèbre du système : rien ne garantit que le fichier soit identique octet pour octet sous Linux, où tourne l'intégration continue. Ce point reste à constater ; s'il échoue, une comparaison numérique à tolérance déclarée devra être décidée.
+7. **Reproductibilité entre machines.** La régénération est identique octet pour octet sur la machine de calcul (macOS, x86_64). Sous Linux, où tourne l'intégration continue, le fichier régénéré diffère au dernier chiffre de certaines bornes : constaté le 15/11/2026, la matrice R et la somme des largeurs restant identiques. Le dernier chiffre d'un résultat en double précision dépend de la bibliothèque mathématique du système. Décision 0009 : hors de la machine de référence, les bornes sont comparées à 10⁻¹¹° près (3,6 × 10⁻⁸″), signes et ordre restant exacts. Le fichier `generes/frontieres.csv` fait foi : le classement d'un astre lira ses bornes, sans les recalculer.
 8. **Bornes exactes.** La convention « début inclus, fin exclue » est celle du moteur, appliquée à la longitude. La fonction de Skyfield a ses propres conventions sur les lignes de la grille (à gauche pour l'ascension droite, à droite pour la déclinaison) ; elles n'interviennent qu'en un point isolé et ne changent aucune largeur. Le classement d'un astre se fera sur les bornes du fichier, pas en rappelant la grille.
 
 ## 8. Questions pour l'expert

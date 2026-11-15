@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
@@ -241,3 +242,127 @@ def test_construire_sensitivity_table_writes_nothing(
     assert table.count("\n| ") == 14  # séparateur et 13 signes, sous l'en-tête
     for sign in boundaries.EXPECTED_ORDER:
         assert f"| {sign} |" in table
+
+
+# --- Hors de la machine de référence (décision 0009) ---------------------------------------
+
+
+def as_if_produced_elsewhere(output: Path, shift: float) -> None:
+    """Décale une borne du fichier présent, comme le ferait le dernier chiffre d'une autre
+    machine, et remet l'empreinte du manifeste en accord avec ce fichier."""
+    csv_path, manifest_path = output / "frontieres.csv", output / "manifest.json"
+    text = csv_path.read_text(encoding="utf-8")
+    start = text.splitlines()[5].split(",")[1]
+    moved = repr(float(start) + shift)
+    assert moved != start
+    text = text.replace(start, moved)
+    assert text.count(moved) == 2  # début d'un signe et fin du précédent : la même borne
+    csv_path.write_text(text, encoding="utf-8")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    raw = text.encode("utf-8")
+    manifest["files"]["frontieres.csv"] = {
+        "sha256": hashlib.sha256(raw).hexdigest(),
+        "bytes": len(raw),
+    }
+    manifest_path.write_bytes(s.render_manifest(manifest))
+
+
+@pytest.fixture
+def elsewhere(monkeypatch: pytest.MonkeyPatch) -> Callable[[], None]:
+    """Rend une fonction qui déplace la vérification sur une autre machine que celle qui a
+    produit les fichiers : à appeler après la génération."""
+
+    def move() -> None:
+        monkeypatch.setattr(s, "current_platform", lambda: "Autre machine")
+
+    return move
+
+
+def test_construire_cross_platform_tolerance_is_declared() -> None:
+    assert s.CROSS_PLATFORM_TOLERANCE_DEG == 1e-11
+
+
+def test_construire_reference_machine_stays_byte_exact(output: Path, gates: Path) -> None:
+    """Sur la machine notée au manifeste, un seul chiffre de différence est refusé."""
+    run([], output, gates)
+    as_if_produced_elsewhere(output, 1e-13)
+    assert run(["--verifier"], output, gates) == 1
+
+
+def test_construire_elsewhere_accepts_identical_files(
+    output: Path, gates: Path, elsewhere: Callable[[], None], capsys: pytest.CaptureFixture[str]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    capsys.readouterr()
+    assert run(["--verifier"], output, gates) == 0
+    assert "écart maximal 0.000e+00°" in capsys.readouterr().out
+
+
+def test_construire_elsewhere_accepts_a_last_digit_difference(
+    output: Path, gates: Path, elsewhere: Callable[[], None], capsys: pytest.CaptureFixture[str]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    as_if_produced_elsewhere(output, 1e-13)
+    before = {p.name: p.read_bytes() for p in output.iterdir()}
+    capsys.readouterr()
+    assert run(["--verifier"], output, gates) == 0
+    assert "comparaison numérique" in capsys.readouterr().out
+    assert {p.name: p.read_bytes() for p in output.iterdir()} == before  # rien n'est réécrit
+
+
+def test_construire_elsewhere_refuses_a_difference_above_the_tolerance(
+    output: Path, gates: Path, elsewhere: Callable[[], None]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    as_if_produced_elsewhere(output, 1e-9)
+    assert run(["--verifier"], output, gates) == 1
+
+
+def test_construire_elsewhere_refuses_another_order_of_signs(
+    output: Path, gates: Path, elsewhere: Callable[[], None]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    path = output / "frontieres.csv"
+    path.write_text(
+        path.read_text(encoding="utf-8").replace("Oph,", "Xxx,").replace("Sco,", "Oph,"),
+        encoding="utf-8",
+    )
+    assert run(["--verifier"], output, gates) == 1
+
+
+def test_construire_elsewhere_refuses_a_missing_row(
+    output: Path, gates: Path, elsewhere: Callable[[], None]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    path = output / "frontieres.csv"
+    lines = path.read_text(encoding="utf-8").splitlines()
+    path.write_text("\n".join(lines[:-1]) + "\n", encoding="utf-8")
+    assert run(["--verifier"], output, gates) == 1
+
+
+def test_construire_elsewhere_refuses_an_unreadable_value(
+    output: Path, gates: Path, elsewhere: Callable[[], None]
+) -> None:
+    run([], output, gates)
+    elsewhere()
+    path = output / "frontieres.csv"
+    path.write_text(path.read_text(encoding="utf-8").replace("Gem,9", "Gem,x9"), encoding="utf-8")
+    assert run(["--verifier"], output, gates) == 1
+
+
+def test_construire_elsewhere_keeps_the_rest_of_the_manifest_exact(
+    output: Path, gates: Path, elsewhere: Callable[[], None]
+) -> None:
+    """La tolérance ne porte que sur les bornes : le reste du manifeste reste comparé tel quel."""
+    run([], output, gates)
+    elsewhere()
+    path = output / "manifest.json"
+    manifest = json.loads(path.read_text(encoding="utf-8"))
+    manifest["data_status"] = "verified"
+    path.write_bytes(s.render_manifest(manifest))
+    assert run(["--verifier"], output, gates) == 1

@@ -8,9 +8,11 @@ Usage :
 
 Le calcul est celui de `moteur.boundaries.construct()` ; ce script ne fait que l'écrire.
 Si un contrôle du moteur échoue, rien n'est écrit. Les fichiers de generes/ ne s'éditent
-jamais à la main : `--verifier` les régénère, puis compare le CSV octet par octet et le
-manifeste clé par clé (la version corrective de Python et la plateforme, qui peuvent changer
-d'une machine à l'autre sans changer le calcul, sont signalées et non refusées).
+jamais à la main : `--verifier` les régénère, puis compare le CSV et le manifeste clé par clé.
+Sur la machine notée au manifeste, le CSV doit être identique octet pour octet. Ailleurs, le
+dernier chiffre d'un nombre peut dépendre du système : les bornes sont comparées à 10⁻¹¹° près,
+signes et ordre restant exacts (décision 0009). La version corrective de Python et la
+plateforme sont signalées, pas refusées.
 
     uv run python scripts/construire_frontieres.py --sensibilite
         affiche le déplacement de chaque frontière si la grille était lue à l'équateur moyen
@@ -25,6 +27,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import platform
 import sys
 import tempfile
@@ -47,6 +50,10 @@ CSV_NAME = "frontieres.csv"
 MANIFEST_NAME = "manifest.json"
 # Versions notées pour mémoire : elles décrivent la machine qui a produit les fichiers.
 INFORMATIVE_VERSIONS = ("python", "platform")
+# Hors de la machine de référence, écart admis entre deux bornes de même rang (décision 0009).
+# Bien au-dessus du bruit du dernier chiffre (10⁻¹³° environ), bien en dessous de tout effet
+# mesurable : 10⁻¹¹° valent 3,6 × 10⁻⁸ seconde d'arc.
+CROSS_PLATFORM_TOLERANCE_DEG = 1e-11
 CSV_HEADER = "sign_id,start_deg,end_deg,width_deg"
 
 
@@ -123,7 +130,7 @@ def build_manifest(
         "skyfield": model.skyfield_version,
         "numpy": model.numpy_version,
         "python": model.python_version,
-        "platform": f"{platform.system()} {platform.machine()}",
+        "platform": current_platform(),
     }
     manifest["gates"] = gates
     # Statut des données affiché partout : « candidate » tant que G1 n'est pas franchie.
@@ -185,8 +192,67 @@ def generate(output: Path, gates_path: Path) -> tuple[bytes, bytes]:
     return csv, render_manifest(manifest)
 
 
+def current_platform() -> str:
+    """Machine sur laquelle tourne le script, telle qu'elle est notée au manifeste."""
+    return f"{platform.system()} {platform.machine()}"
+
+
+def _parse_csv(raw: bytes, label: str) -> list[tuple[str, float, float, float]]:
+    try:
+        header, *rows = raw.decode("utf-8").splitlines()
+    except (UnicodeDecodeError, ValueError) as error:
+        raise ManifestError(f"{CSV_NAME} {label} illisible : {error}") from error
+    if header != CSV_HEADER:
+        raise ManifestError(f"{CSV_NAME} {label} : en-tête inattendu")
+    parsed = []
+    for row in rows:
+        fields = row.split(",")
+        try:
+            sign, start, end, width = (
+                fields[0],
+                float(fields[1]),
+                float(fields[2]),
+                float(fields[3]),
+            )
+        except (IndexError, ValueError) as error:
+            raise ManifestError(f"{CSV_NAME} {label} : ligne illisible {row!r}") from error
+        if len(fields) != 4 or not all(math.isfinite(v) for v in (start, end, width)):
+            raise ManifestError(f"{CSV_NAME} {label} : ligne invalide {row!r}")
+        parsed.append((sign, start, end, width))
+    return parsed
+
+
+def compare_numerically(stored: bytes, fresh: bytes) -> tuple[list[str], float]:
+    """Compare deux fichiers de frontières nombre par nombre (décision 0009).
+
+    Mêmes signes dans le même ordre, exigés exactement. Rend les défauts trouvés et le plus
+    grand écart, en degrés, entre deux nombres de même rang.
+    """
+    try:
+        present, regenerated = _parse_csv(stored, "présent"), _parse_csv(fresh, "régénéré")
+    except ManifestError as error:
+        return [str(error)], math.inf
+    if [row[0] for row in present] != [row[0] for row in regenerated]:
+        return [f"{CSV_NAME} : signes ou ordre différents du fichier régénéré"], math.inf
+    deviation = max(
+        (
+            abs(first - second)
+            for old, new in zip(present, regenerated, strict=True)
+            for first, second in zip(old[1:], new[1:], strict=True)
+        ),
+        default=0.0,
+    )
+    return [], deviation
+
+
 def verify(output: Path, gates_path: Path) -> list[str]:
-    """Régénère dans un dossier temporaire et compare aux fichiers présents. N'écrit rien ici."""
+    """Régénère dans un dossier temporaire et compare aux fichiers présents. N'écrit rien ici.
+
+    Sur la machine notée au manifeste, le CSV doit être identique octet pour octet. Ailleurs,
+    le dernier chiffre d'un nombre en double précision peut dépendre de la bibliothèque
+    mathématique du système : les bornes sont comparées à `CROSS_PLATFORM_TOLERANCE_DEG` près,
+    signes et ordre restant exacts (décision 0009).
+    """
     findings: list[str] = []
     csv_path, manifest_path = output / CSV_NAME, output / MANIFEST_NAME
     for path in (csv_path, manifest_path):
@@ -199,13 +265,36 @@ def verify(output: Path, gates_path: Path) -> list[str]:
         fresh_csv, fresh_manifest = Path(folder) / CSV_NAME, Path(folder) / MANIFEST_NAME
         fresh_csv.write_bytes(csv)
         fresh_manifest.write_bytes(manifest)
-        if fresh_csv.read_bytes() != csv_path.read_bytes():
-            findings.append(f"{CSV_NAME} : différent du fichier régénéré")
-        stored = read_manifest(manifest_path)
+        regenerated = fresh_csv.read_bytes()
         fresh = json.loads(fresh_manifest.read_bytes())
-    # La version corrective de Python peut changer d'une machine à l'autre sans changer le
-    # calcul : elle est signalée, pas refusée. Tout le reste doit être identique.
+    present = csv_path.read_bytes()
+    stored = read_manifest(manifest_path)
     stored_versions = stored.get("versions", {})
+
+    if stored_versions.get("platform") == current_platform():
+        if regenerated != present:
+            findings.append(f"{CSV_NAME} : différent du fichier régénéré")
+    else:
+        problems, deviation = compare_numerically(present, regenerated)
+        findings += problems
+        if not problems:
+            print(
+                f"  · autre machine que celle du manifeste : comparaison numérique, "
+                f"écart maximal {deviation:.3e}° (tolérance {CROSS_PLATFORM_TOLERANCE_DEG}°)"
+            )
+            if deviation > CROSS_PLATFORM_TOLERANCE_DEG:
+                findings.append(
+                    f"{CSV_NAME} : écart de {deviation:.3e}° avec le fichier régénéré, "
+                    f"au-delà de la tolérance de {CROSS_PLATFORM_TOLERANCE_DEG}°"
+                )
+            else:
+                # L'empreinte du fichier reste celle de la machine de référence.
+                stored_files = stored.get("files", {})
+                if isinstance(stored_files, dict) and CSV_NAME in stored_files:
+                    fresh["files"][CSV_NAME] = stored_files[CSV_NAME]
+
+    # La version corrective de Python et la plateforme décrivent la machine qui a produit les
+    # fichiers : signalées, pas refusées. Tout le reste doit être identique.
     for key in INFORMATIVE_VERSIONS:
         here, recorded = fresh["versions"][key], stored_versions.get(key)
         if here != recorded:
