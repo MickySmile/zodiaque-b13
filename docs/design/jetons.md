@@ -41,6 +41,22 @@ Couleurs de remplissage des 13 secteurs, dans l'ordre des signes ⚠️ (ordre d
 
 Les 13 couleurs de secteur du mode sombre sont à définir pour un contraste AA sur `#0E1726` ⚠️.
 
+## Jetons ajoutés en phase 6 — proposés par Claude, à confirmer par Micky ⚠️
+Les planches ne donnent pas ces valeurs. Elles sont choisies pour tenir le contraste AA (rapport calculé, WCAG 2.2) et restent modifiables ici, puis dans `jetons.css`.
+
+| Jeton | Clair | Sombre | Contraste visé |
+| --- | --- | --- | --- |
+| `--surface` | `#FFFFFF` (planche 7) | `#16233A` | texte sombre 13,3 : 1 |
+| `--bordure` | `#D5D9E4` (planche 7) | `#33465F` (le `--trait` de la planche 1) | décor |
+| `--bordure-controle` (champs de saisie) | `#6B7288` | `#7F8DA3` | 4,8 : 1 et 4,7 : 1 sur la surface |
+| `--lien` / `--lien-survol` | planche 7 | `#8FB8F0` / `#B9D3F7` | 7,7 : 1 sur la surface |
+| `--bouton-fond` / `--bouton-texte` | `#2F5FB0` / `#FFFFFF` | `#8FB8F0` / `#0E1726` | 6,2 : 1 et 8,8 : 1 |
+| `--alerte` (message bloquant, toujours avec un intitulé) | `#A3341F` | `#FFB4A3` | 6,8 : 1 et 9,2 : 1 |
+| `--accent-selection` | `#2F5FB0` | `#F2B441` (ambre relevé sur la planche 1) | 9,7 : 1 sur le fond sombre |
+| `--trait-frontiere` | `#1E2233` (planche 7) | `#E8ECF2` | délimite les secteurs |
+
+Secteurs du mode sombre : la teinte de chaque couleur claire, ramenée à une clarté de 27 % et une saturation plafonnée à 38 % ; le texte `#E8ECF2` y tient entre 5,9 : 1 et 11 : 1. Bélier `#5F2F2B`, Taureau `#5F482B`, Gémeaux `#5F562B`, Cancer `#515F2B`, Lion `#2B5F35`, Vierge `#2B5F5B`, Balance `#2B445F`, Scorpion `#2B2B5F`, Serpentaire `#472B5F`, Sagittaire `#5F2B50`, Capricorne `#5F3E2B`, Verseau `#365446`, Poissons `#373D53`. Même règle pour les 13 : aucune ne distingue le Serpentaire.
+
 ## Badges de statut — Pédagogique (planche 3)
 | Niveau | Fond | Texte | Texte secondaire |
 | --- | --- | --- | --- |

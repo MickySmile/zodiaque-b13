@@ -45,3 +45,7 @@ Valeurs relevées dans le code source des planches : `jetons.md`.
 | 9 | Astrocartographie de l'Ascendant B | 8 | Hors périmètre : backlog |
 | 10 | Textes de la carte (motif, ressources, tensions) | 4 | Illustration seulement : le contenu des fiches vient du PRD, transcrit dans `referentiel/` |
 | 11 | Polices chargées depuis Google Fonts | Toutes | Polices auto-hébergées (Fontsource) : aucun appel à un tiers |
+| 12 | Abréviations françaises des signes (« Bél », « Ser », « Poi »…) | 1, 7 | Codes UAI des constellations, identiques aux identifiants du moteur (Ari … Oph … Psc) : « Ser » est le code du Serpent, une autre constellation (choix de Micky, 15/11/2026) |
+| 13 | Champ « + Nom (facultatif) » | 6 | Absent : aucune donnée personnelle inutile au calcul n'est demandée |
+| 14 | Pastilles de précision, « Heure inconnue » à droite du titre, pictogrammes des rubriques, puces vertes numérotées, lien « Masquer », étiquette « Modèle B » en ambre plein, bascule 12 / 13 et système de maisons | 6 | Au MVP : contrôles natifs (boutons radio, case à cocher) et listes simples, mêmes contenus, accès au clavier garanti ; comparateur et maisons arrivent en V1. Habillage à reprendre après le MVP ⚠️ |
+| 15 | Roue sombre à deux bleus alternés, noms hors de l'anneau ; roue claire avec disque central, repères ASC, DSC, MC, IC et anneau des maisons | 1, 7 | 13 teintes par thème (`jetons.md`) ; glyphe et code dans l'anneau, côte à côte ; longitudes chiffrées tous les 45° ; ni disque d'aspects, ni angles, ni maisons tant que le MVP ne les calcule pas (décision 0012) |

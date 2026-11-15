@@ -1,0 +1,79 @@
+/* Bandeau de statut — piste Pédagogique (planche 3). Numéro et libellé, jamais la couleur seule. */
+
+.bandeau-statut {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--bordure);
+  border-left: 0.375rem solid var(--badge-2-fond);
+  border-radius: var(--badge-rayon);
+  background: var(--surface);
+}
+
+.statut-donnees {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.statut-donnees strong {
+  font-family: var(--police-mono);
+  font-weight: 500;
+  padding: 0.0625rem 0.5rem;
+  border: 1px solid var(--texte);
+  border-radius: var(--badge-rayon);
+}
+
+.statut-explication {
+  color: var(--texte-secondaire);
+}
+
+.niveaux {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.badge {
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--badge-accent);
+  border-radius: var(--badge-rayon);
+  font-size: 0.875rem;
+}
+
+.badge-numero {
+  font-family: var(--police-mono);
+  font-weight: 500;
+}
+
+.badge-libelle {
+  font-weight: 600;
+}
+
+.badge-01 {
+  background: var(--badge-1-fond);
+  color: var(--badge-1-texte);
+}
+
+.badge-01 .badge-objet {
+  color: var(--badge-1-texte-secondaire);
+}
+
+.badge-02 {
+  background: var(--badge-2-fond);
+  color: var(--badge-2-texte);
+}
+
+.badge-02 .badge-objet {
+  color: var(--badge-2-texte-secondaire);
+}
+
+.badge-03 {
+  background: var(--badge-3-fond);
+  color: var(--badge-3-texte);
+}
+
+.badge-03 .badge-objet {
+  color: var(--badge-3-texte-secondaire);
+}

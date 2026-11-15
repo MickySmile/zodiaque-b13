@@ -90,14 +90,14 @@ class BirthInput:
             )
 
         raw_date = record.get("date_local")
-        date_local = None
-        if isinstance(raw_date, str) and DATE_PATTERN.fullmatch(raw_date):
-            try:
-                date_local = date.fromisoformat(raw_date)
-            except ValueError:
-                date_local = None
-        if date_local is None:
+        if not isinstance(raw_date, str) or not DATE_PATTERN.fullmatch(raw_date):
             raise InputError("date invalide : le format attendu est AAAA-MM-JJ")
+        try:
+            date_local = date.fromisoformat(raw_date)
+        except ValueError:
+            # Bien formée, mais absente du calendrier (31 février, mois 13…). L'erreur d'origine,
+            # qui cite la date, n'est pas gardée en cause.
+            raise InputError("date invalide : ce jour n'existe pas dans le calendrier") from None
         if not FIRST_YEAR <= date_local.year <= LAST_YEAR:
             raise InputError(
                 f"date hors de la période couverte : l'éphéméride DE440s va de {FIRST_YEAR} "
@@ -115,7 +115,7 @@ class BirthInput:
             if time_local is None:
                 raise InputError("heure invalide : le format attendu est HH:MM:SS, sans fuseau")
         if status != "unknown" and time_local is None:
-            raise InputError("heure manquante : indique l'heure, ou choisis « heure inconnue »")
+            raise InputError("heure manquante : indiquez l'heure, ou choisissez « heure inconnue »")
         if status == "unknown":
             time_local = None
 
@@ -124,10 +124,12 @@ class BirthInput:
             raise InputError("incertitude sur l'heure invalide : une durée positive est attendue")
         if uncertainty > MAX_UNCERTAINTY_SECONDS:
             raise InputError(
-                "incertitude sur l'heure supérieure à douze heures : choisis « heure inconnue »"
+                "incertitude sur l'heure supérieure à douze heures : choisissez « heure inconnue »"
             )
         if status == "uncertain" and uncertainty == 0.0:
-            raise InputError("heure incertaine : indique de combien, ou choisis « heure connue »")
+            raise InputError(
+                "heure incertaine : indiquez de combien, ou choisissez « heure connue »"
+            )
 
         zone = record.get("timezone")
         if not isinstance(zone, str) or not zone:
@@ -268,7 +270,7 @@ def resolve_local_time(
     if not found:
         raise NonexistentLocalTime(
             "Cette heure locale n'existe pas : ce jour-là, les horloges ont été avancées. "
-            "Vérifie l'heure de naissance ; aucun thème n'est calculé."
+            "Vérifiez l'heure de naissance ; aucun thème n'est calculé."
         )
     if len(found) == 1:
         return Resolution(

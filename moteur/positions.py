@@ -41,11 +41,14 @@ TimeScale = Literal["utc", "ut1_before_1972"]
 
 
 class PositionError(Exception):
-    """La position ne peut pas être calculée. Le message est destiné à la personne."""
+    """La position ne peut pas être calculée. Aucun message ne reprend une saisie."""
 
 
 class EphemerisUnavailable(PositionError):
-    """Le fichier d'éphéméride est absent ou ne correspond pas à son empreinte."""
+    """Le fichier d'éphéméride est absent ou ne correspond pas à son empreinte.
+
+    Son message s'adresse à qui installe le serveur ; l'API le remplace par un texte fixe.
+    """
 
 
 class OutOfEphemerisRange(PositionError):

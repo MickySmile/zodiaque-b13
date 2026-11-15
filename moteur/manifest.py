@@ -20,13 +20,9 @@ from moteur.coordinates import REFERENCE_FRAME, frame_matrix
 from moteur.positions import SunEphemeris
 
 
-def build_manifest(
-    chain: SunEphemeris, zodiac: Zodiac, input_fingerprint: str | None
-) -> dict[str, object]:
-    """Manifeste commun aux résultats du moteur. `input_fingerprint` : empreinte de la saisie,
-    ou `None` pour un résultat qui ne dépend d'aucune saisie personnelle (calendrier annuel)."""
+def boundary_manifest(zodiac: Zodiac) -> dict[str, object]:
+    """Manifeste d'un résultat qui ne dépend que du découpage : aucune éphéméride n'est lue."""
     provenance = zodiac.provenance
-    source = chain.manifest()
     return {
         "calculation_engine_version": moteur.__version__,
         "model_id": moteur.MODEL_ID,
@@ -43,6 +39,33 @@ def build_manifest(
             if provenance is None
             else provenance.boundary_source_sha256,
         },
+        "versions": {
+            "skyfield": str(skyfield.__version__),
+            "numpy": str(np.__version__),
+            "scipy": str(scipy.__version__),
+            "python": platform.python_version(),
+        },
+        "symbolic_ruleset_version": None,
+        "dominance_ruleset_version": None,
+        "synthesis_ruleset_version": None,
+        "text_generator_version": None,
+        # « candidate » tant que la porte G1 n'est pas franchie ; un découpage qui ne vient pas
+        # des fichiers générés est un démonstrateur.
+        "data_status": "synthetic" if provenance is None else provenance.data_status,
+        "validation_status": "not_validated"
+        if provenance is None or provenance.data_status != "verified"
+        else "validated",
+    }
+
+
+def build_manifest(
+    chain: SunEphemeris, zodiac: Zodiac, input_fingerprint: str | None
+) -> dict[str, object]:
+    """Manifeste commun aux résultats du moteur. `input_fingerprint` : empreinte de la saisie,
+    ou `None` pour un résultat qui ne dépend d'aucune saisie personnelle (calendrier annuel)."""
+    source = chain.manifest()
+    return {
+        **boundary_manifest(zodiac),
         "ephemeris_id_and_hash": {
             "id": source["ephemeris"],
             "sha256": source["ephemeris_sha256"],
@@ -56,21 +79,5 @@ def build_manifest(
         ],
         "time_scale_policy": source["time_scale_policy"],
         "timezone_database_version": timezone_database_version(),
-        "versions": {
-            "skyfield": str(skyfield.__version__),
-            "numpy": str(np.__version__),
-            "scipy": str(scipy.__version__),
-            "python": platform.python_version(),
-        },
-        "symbolic_ruleset_version": None,
-        "dominance_ruleset_version": None,
-        "synthesis_ruleset_version": None,
-        "text_generator_version": None,
         "chart_input_hash": input_fingerprint,
-        # « candidate » tant que la porte G1 n'est pas franchie ; un découpage qui ne vient pas
-        # des fichiers générés est un démonstrateur.
-        "data_status": "synthetic" if provenance is None else provenance.data_status,
-        "validation_status": "not_validated"
-        if provenance is None or provenance.data_status != "verified"
-        else "validated",
     }

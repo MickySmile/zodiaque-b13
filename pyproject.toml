@@ -47,6 +47,7 @@ ignore_missing_imports = true
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "hypothesis>=6.170.15",
     "mypy>=2.4.1",
     "pytest>=9.2.0",

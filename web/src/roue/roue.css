@@ -1,0 +1,203 @@
+/* Roue SVG (annexe § H). Toutes les couleurs passent par les jetons. */
+
+.roue {
+  margin: 0;
+}
+
+.roue svg {
+  display: block;
+  width: 100%;
+  max-width: 44rem;
+  height: auto;
+  margin: 0 auto;
+  font-family: var(--police-texte);
+}
+
+.roue figcaption {
+  margin-top: 0.75rem;
+  color: var(--texte-secondaire);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.roue .guide {
+  fill: none;
+  stroke: var(--trait);
+  stroke-width: 1;
+}
+
+.roue .bord {
+  fill: none;
+  stroke: var(--trait-frontiere);
+  stroke-width: 2;
+}
+
+.roue .graduation .repere {
+  stroke: var(--texte-secondaire);
+  stroke-width: 1;
+}
+
+.roue .graduation .chiffre {
+  fill: var(--texte-secondaire);
+  font-family: var(--police-mono);
+  font-size: 15px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Même traitement pour les 13 signes : la couleur identifie, le glyphe et le nom l'accompagnent. */
+.roue .signe {
+  outline: none;
+}
+
+.roue .signe[role="button"] {
+  cursor: pointer;
+}
+
+.roue .secteur {
+  stroke: none;
+}
+
+.roue .nom text {
+  fill: var(--texte);
+  text-anchor: middle;
+  dominant-baseline: central;
+  pointer-events: none;
+}
+
+.roue .glyphe,
+.roue .glyphe-seul {
+  font-family: var(--police-glyphes);
+  font-size: 36px;
+}
+
+.roue .glyphe-seul {
+  display: none;
+}
+
+.roue .abreviation {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.roue .frontiere {
+  stroke: var(--trait-frontiere);
+  stroke-width: var(--trait-frontiere-epaisseur);
+}
+
+/*
+ * Sélection et focus, deux signes distincts, jamais la couleur seule : la sélection est un
+ * contour plein et épais, avec le nom souligné ; le focus du clavier est un contour en tirets.
+ */
+.roue .focus {
+  fill: none;
+  stroke: none;
+  pointer-events: none;
+}
+
+.roue .signe[aria-pressed="true"] .secteur {
+  stroke: var(--accent-selection);
+  stroke-width: 8;
+}
+
+.roue .signe:focus-visible .focus {
+  stroke: var(--texte);
+  stroke-width: 5;
+  stroke-dasharray: 12 7;
+}
+
+.roue .nom[data-choisi="true"] text {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.roue .astre {
+  outline: none;
+}
+
+.roue .repere-exact {
+  fill: var(--texte);
+}
+
+.roue .tige {
+  stroke: var(--texte);
+  stroke-width: 2;
+}
+
+.roue .rappel {
+  stroke: var(--texte-secondaire);
+  stroke-width: 1.5;
+}
+
+.roue .astre text {
+  fill: var(--texte);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.roue .etiquette-glyphe {
+  font-family: var(--police-glyphes);
+  font-size: 34px;
+}
+
+.roue .etiquette-valeur {
+  font-family: var(--police-mono);
+  font-size: 15px;
+}
+
+.roue .halo {
+  fill: none;
+  stroke: none;
+}
+
+.roue .astre:focus-visible .halo {
+  stroke: var(--texte);
+  stroke-width: 5;
+  stroke-dasharray: 12 7;
+}
+
+.roue .astre:focus-visible .repere-exact {
+  stroke: var(--accent-selection);
+  stroke-width: 6;
+}
+
+/*
+ * Petit écran : on masque les détails secondaires plutôt que de réduire toute la typographie.
+ * Les codes, la graduation fine et ses chiffres disparaissent ; le glyphe, agrandi, revient au
+ * milieu de son secteur ; les traits de sélection et de focus s'épaississent. Le nom complet
+ * reste dans le tableau des 13 signes et dans le nom accessible. Aucune largeur ne change.
+ */
+@media (max-width: 30rem) {
+  .roue .graduation .fin,
+  .roue .graduation .chiffre,
+  .roue .abreviation,
+  .roue .glyphe {
+    display: none;
+  }
+
+  .roue .glyphe-seul {
+    display: inline;
+    font-size: 46px;
+  }
+
+  .roue .etiquette-glyphe {
+    font-size: 52px;
+  }
+
+  .roue .etiquette-valeur {
+    font-size: 30px;
+  }
+
+  .roue .repere-exact {
+    r: 10px;
+  }
+
+  .roue .signe[aria-pressed="true"] .secteur {
+    stroke-width: 14;
+  }
+
+  .roue .signe:focus-visible .focus,
+  .roue .astre:focus-visible .halo {
+    stroke-width: 10;
+  }
+}

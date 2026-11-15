@@ -51,7 +51,8 @@ def test_socle_version_unique() -> None:
 
 
 def test_socle_api_route_health() -> None:
-    from api.main import HealthResponse, app, health
+    from api.main import app, health
+    from api.schemas import HealthResponse
 
     chemins = {getattr(route, "path", None) for route in app.routes}
     assert "/health" in chemins

@@ -1,10 +1,13 @@
 /*
  * Jetons de design — transcrits de docs/design/jetons.md (relevé du 15/11/2026).
  * Un composant n'utilise jamais une couleur ou une police en dur : il passe par ces variables.
- * Les valeurs marquées « à relever » dans jetons.md ne sont pas définies ici : voir la fin du fichier.
+ * Les jetons que les planches ne donnent pas sont proposés en phase 6 et marqués comme tels.
  */
 
 :root {
+  /* Contrôles natifs (cases, listes, barres de défilement) rendus dans le thème courant. */
+  color-scheme: light;
+
   /* Polices (Fontsource, auto-hébergées) */
   --police-texte: "Inter", system-ui, sans-serif;
   --police-mono: "IBM Plex Mono", ui-monospace, monospace;
@@ -25,6 +28,15 @@
   --rayon-carte: 14px;
   --trait-frontiere: #1e2233;
   --trait-frontiere-epaisseur: 2px;
+
+  /* Proposés en phase 6 (docs/design/jetons.md), à confirmer par Micky. */
+  --texte-discret: #5a6075;
+  --trait: #d5d9e4;
+  --bordure-controle: #6b7288;
+  --bouton-fond: #2f5fb0;
+  --bouton-texte: #ffffff;
+  --alerte: #a3341f;
+  --accent-selection: #2f5fb0;
 
   /*
    * Remplissage des 13 secteurs, thème clair. Ordre déduit du tracé de la planche, à confirmer.
@@ -86,16 +98,38 @@
 
 /* Thème sombre, piste Observatoire (planche 1). Activé par data-theme="sombre" sur <html>. */
 :root[data-theme="sombre"] {
+  color-scheme: dark;
+
   --fond: #0e1726;
   --texte: #e8ecf2;
   --texte-secondaire: #c9d2df;
   --texte-discret: #9aa6b8;
   --trait: #33465f;
-}
 
-/*
- * Non définis, faute de valeur dans jetons.md (à relever sur les planches, puis à ajouter ici) :
- *   --accent-selection        ambre de la sélection, thème sombre ;
- *   --secteur-* du thème sombre  13 couleurs à définir pour un contraste AA sur #0e1726 ;
- *   --surface, --bordure, --lien du thème sombre.
- */
+  /* Proposés en phase 6 (docs/design/jetons.md), à confirmer par Micky. */
+  --surface: #16233a;
+  --bordure: #33465f;
+  --bordure-controle: #7f8da3;
+  --lien: #8fb8f0;
+  --lien-survol: #b9d3f7;
+  --bouton-fond: #8fb8f0;
+  --bouton-texte: #0e1726;
+  --alerte: #ffb4a3;
+  --accent-selection: #f2b441;
+  --trait-frontiere: #e8ecf2;
+
+  /* Même règle pour les 13 secteurs : teinte du thème clair, clarté 27 %, saturation ≤ 38 %. */
+  --secteur-ari: #5f2f2b;
+  --secteur-tau: #5f482b;
+  --secteur-gem: #5f562b;
+  --secteur-cnc: #515f2b;
+  --secteur-leo: #2b5f35;
+  --secteur-vir: #2b5f5b;
+  --secteur-lib: #2b445f;
+  --secteur-sco: #2b2b5f;
+  --secteur-oph: #472b5f;
+  --secteur-sgr: #5f2b50;
+  --secteur-cap: #5f3e2b;
+  --secteur-aqr: #365446;
+  --secteur-psc: #373d53;
+}

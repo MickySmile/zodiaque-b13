@@ -62,6 +62,13 @@ fourni_par = "tzdata (PyPI)"
 licence = "Apache-2.0 ; base IANA dans le domaine public"
 usage = "Fuseaux historiques par identifiant IANA ; version au manifeste"
 
+[[source]]
+id = "timezonefinder-data"
+type = "paquet"
+fourni_par = "timezonefinder_data (PyPI), dépendance de timezonefinder"
+licence = "ODbL 1.0 (métadonnées du paquet) ; code de timezonefinder sous MIT"
+usage = "Contours des fuseaux, pour déduire un fuseau de coordonnées saisies à la main ; version au manifeste (ajout validé par Micky, 15/11/2026)"
+
 # Option pour la porte G1 : seconde réalisation des frontières (numérisation de Delporte par P. Barbier).
 # À ajouter seulement après accord de Micky sur l'URL et la licence ⚠️ :
 # [[source]]

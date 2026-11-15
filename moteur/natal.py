@@ -265,7 +265,7 @@ def sun_sign_chart(
         except NonexistentLocalTime as error:
             raise InputError(
                 "Cette date n'a pas existé dans ce fuseau : la journée a été sautée. "
-                "Vérifie la date de naissance ; aucun thème n'est calculé."
+                "Vérifiez la date de naissance ; aucun thème n'est calculé."
             ) from error
         results = (_sun_sign(chain, partition, noon, local_day_bounds(birth.date_local, zone)),)
         kind, title = "unknown", REFERENCE_TITLE
