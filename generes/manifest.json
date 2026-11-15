@@ -1,5 +1,139 @@
 {
-  "files": {},
+  "data_status": "candidate",
+  "files": {
+    "frontieres.csv": {
+      "bytes": 803,
+      "sha256": "6345a9d5c7c197d323bc9ac68a2f965b7525638aaccdacc32b0de4a108a47a0b"
+    }
+  },
+  "gates": {
+    "g1": {
+      "crossed": false,
+      "date": "",
+      "report": "",
+      "title": "13 / 13 frontières vérifiées indépendamment",
+      "validated_by": ""
+    },
+    "g2": {
+      "crossed": false,
+      "date": "",
+      "report": "",
+      "title": "10 / 10 thèmes de référence concordants",
+      "validated_by": ""
+    },
+    "g3": {
+      "crossed": false,
+      "date": "",
+      "report": "",
+      "title": "Portrait 100 % traçable, 5 / 5 tests de mutation",
+      "validated_by": ""
+    }
+  },
+  "model": {
+    "boundary_equatorial_convention": "equatorial grid of equinox B1875, queried as radec(epoch=B1875) with Skyfield's Time.M matrix (precession, nutation, frame bias)",
+    "boundary_lines": [
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Ari",
+        "value": 1.6666666666666667
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Tau",
+        "value": 3.283333333333333
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Gem",
+        "value": 5.883333333333334
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Cnc",
+        "value": 7.883333333333334
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Leo",
+        "value": 9.25
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Vir",
+        "value": 11.516666666666667
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Lib",
+        "value": 14.25
+      },
+      {
+        "kind": "declination_deg",
+        "sign_id": "Sco",
+        "value": -20.0
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Oph",
+        "value": 16.266666666666666
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Sgr",
+        "value": 17.6
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Cap",
+        "value": 20.0
+      },
+      {
+        "kind": "right_ascension_hours",
+        "sign_id": "Aqr",
+        "value": 21.866666666666667
+      },
+      {
+        "kind": "declination_deg",
+        "sign_id": "Psc",
+        "value": -4.0
+      }
+    ],
+    "boundary_sha256": "febb2947d9062443c2c4803d2c6a5427e3ea381f0f8f00413d710ba588a54b13",
+    "boundary_source": "IAU constellation boundaries via Roman 1987 (CDS catalogue VI/42), grid bundled with Skyfield: Skyfield / Roman realisation",
+    "boundary_source_equinox": "B1875",
+    "certification": {
+      "candidate_cuts": 364,
+      "dense_sampling_step_deg": 0.1,
+      "dense_sampling_tolerance_deg": 1e-08,
+      "dense_sampling_transitions": 13,
+      "independent_validation": "not_performed",
+      "interval_count": 13,
+      "neighbour_offset_deg": 1e-09,
+      "sum_error_deg": 0.0,
+      "sum_tolerance_deg": 1e-09,
+      "tangent_lines": 0
+    },
+    "id": "model_b_iau_ecliptic_j2000_v1",
+    "interval_policy": "start_included_end_excluded",
+    "matrix_icrs_to_ecliptic": [
+      [
+        0.9999999999999942,
+        -7.078279744199226e-08,
+        8.056148938997159e-08
+      ],
+      [
+        3.28964476124917e-08,
+        0.9174821299145676,
+        0.3977769994449445
+      ],
+      [
+        -1.0206949456582607e-07,
+        -0.3977769994449448,
+        0.9174821299145668
+      ]
+    ],
+    "reference_frame": "Rx(-84381.406 arcsec) @ Skyfield.ICRS_to_J2000"
+  },
   "sources": {
     "de440s": {
       "bytes": 32726016,
@@ -33,5 +167,12 @@
       "sha256": "51cb9676d9c4775c4d344b328bc3eb1ac3940b089ce4b659ccac883637d09dd6",
       "url": "https://datacenter.iers.org/products/eop/rapid/standard/finals2000A.all"
     }
+  },
+  "versions": {
+    "engine": "0.1.0",
+    "numpy": "2.5.4",
+    "platform": "Darwin x86_64",
+    "python": "3.12.16",
+    "skyfield": "1.55"
   }
 }

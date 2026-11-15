@@ -34,6 +34,10 @@ line-length = 100
 [tool.mypy]
 python_version = "3.12"
 strict = true
+# `scripts/` est un paquet implicite (sans __init__.py) : un script en importe un autre par
+# `scripts.telecharger`, et mypy doit donner ce même nom au fichier.
+mypy_path = "$MYPY_CONFIG_FILE_DIR"
+explicit_package_bases = true
 
 # Bibliothèques de calcul livrées sans annotations (pas de py.typed) : leurs valeurs sont
 # converties explicitement aux frontières du moteur.
