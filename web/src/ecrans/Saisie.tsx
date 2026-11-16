@@ -3,7 +3,7 @@ import type { FormEvent } from 'react'
 import { ApiError } from '../api/client.ts'
 import type { Api } from '../api/client.ts'
 import type { BirthRequest, Place, SunSignResult } from '../api/types.ts'
-import { MOIS, degres } from '../formats.ts'
+import { MOIS } from '../formats.ts'
 import { BandeauStatut } from '../statut/BandeauStatut.tsx'
 import type { StatutAffiche } from '../statut/BandeauStatut.tsx'
 import { FORMULAIRE_VIDE, PRECISIONS, construire, decimal } from './formulaire.ts'
@@ -68,12 +68,28 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
     try {
       const reponse = await client.searchPlaces(f.recherche)
       setRecherche({ etat: 'trouve', lieux: reponse.places })
-      if (reponse.places.length === 0) changer({ manuel: true, lieu: null })
     } catch (erreur) {
       const message = erreur instanceof ApiError ? erreur.message : 'Recherche impossible.'
       setRecherche({ etat: 'erreur', message })
-      changer({ manuel: true, lieu: null })
     }
+  }
+
+  /** Choisir une ville remplit ses coordonnées et son fuseau, tels que GeoNames les donne. */
+  function choisirVille(lieu: Place) {
+    setFuseau('repos')
+    changer({
+      lieu,
+      latitude: String(lieu.latitude_deg),
+      longitude: String(lieu.longitude_deg),
+      fuseauDeduit: null,
+      fuseauConfirme: false,
+    })
+  }
+
+  /** Retoucher une coordonnée : la ville n'est plus la source, le fuseau est à redéduire. */
+  function saisirCoordonnee(champ: 'latitude' | 'longitude', valeur: string) {
+    setFuseau('repos')
+    changer({ [champ]: valeur, lieu: null, fuseauDeduit: null, fuseauConfirme: false })
   }
 
   async function deduireFuseau() {
@@ -119,9 +135,12 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
     }
   }
 
-  const coordonnees = f.manuel
-    ? null
-    : f.lieu && `${degres(f.lieu.latitude_deg, 4)}, ${degres(f.lieu.longitude_deg, 4)}`
+  const saisies = f.latitude.trim() !== '' || f.longitude.trim() !== ''
+  const origine = f.lieu
+    ? `GeoNames, ${f.lieu.name}${f.lieu.admin1_name ? `, ${f.lieu.admin1_name}` : ''} (${f.lieu.country_code})`
+    : saisies
+      ? 'saisies à la main'
+      : 'choisissez une ville, ou saisissez-les'
 
   return (
     <div className="ecran ecran-saisie">
@@ -238,37 +257,26 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
 
           <fieldset>
             <legend>Lieu de naissance</legend>
-            {!f.manuel && (
-              <>
-                <div className="rangee rangee-recherche">
-                  <label>
-                    <span>Ville de naissance</span>
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      value={f.recherche}
-                      onChange={(e) => changer({ recherche: e.target.value })}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          e.preventDefault()
-                          void chercher()
-                        }
-                      }}
-                    />
-                  </label>
-                  <button type="button" className="secondaire" onClick={() => void chercher()}>
-                    Chercher ce lieu
-                  </button>
-                </div>
-                <button
-                  type="button"
-                  className="lien"
-                  onClick={() => changer({ manuel: true, lieu: null })}
-                >
-                  Saisir les coordonnées manuellement
-                </button>
-              </>
-            )}
+            <div className="rangee rangee-recherche">
+              <label>
+                <span>Ville de naissance</span>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={f.recherche}
+                  onChange={(e) => changer({ recherche: e.target.value })}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault()
+                      void chercher()
+                    }
+                  }}
+                />
+              </label>
+              <button type="button" className="secondaire" onClick={() => void chercher()}>
+                Chercher ce lieu
+              </button>
+            </div>
 
             <div aria-live="polite">
               {recherche.etat === 'en-cours' && <p className="aide">Recherche en cours…</p>}
@@ -276,11 +284,11 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
               {recherche.etat === 'trouve' && recherche.lieux.length === 0 && (
                 <p className="avis">
                   Aucune localité de plus de 15 000 habitants ne correspond. Saisissez la latitude
-                  et la longitude : aucun lieu voisin n’est proposé à la place.
+                  et la longitude ci-dessous : aucun lieu voisin n’est proposé à la place.
                 </p>
               )}
             </div>
-            {!f.manuel && recherche.etat === 'trouve' && recherche.lieux.length > 0 && (
+            {recherche.etat === 'trouve' && recherche.lieux.length > 0 && (
               <ul className="lieux">
                 {recherche.lieux.map((lieu) => (
                   <li key={lieu.geoname_id}>
@@ -288,7 +296,7 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
                       type="button"
                       className="secondaire"
                       aria-pressed={f.lieu?.geoname_id === lieu.geoname_id}
-                      onClick={() => changer({ lieu })}
+                      onClick={() => choisirVille(lieu)}
                     >
                       {lieu.name}
                       {lieu.admin1_name ? `, ${lieu.admin1_name}` : ''} ({lieu.country_code}) ·{' '}
@@ -299,45 +307,41 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
               </ul>
             )}
 
-            {f.manuel && (
+            {/*
+              Coordonnées : toujours visibles. Remplies par la ville choisie, ou saisies à la main
+              pour un lieu absent de la liste ; dans ce cas, le fuseau est déduit et confirmé.
+            */}
+            <div className="rangee rangee-2">
+              <label>
+                <span>Latitude (degrés décimaux)</span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  value={f.latitude}
+                  onChange={(e) => saisirCoordonnee('latitude', e.target.value)}
+                />
+              </label>
+              <label>
+                <span>Longitude (degrés décimaux)</span>
+                <input
+                  type="text"
+                  inputMode="decimal"
+                  autoComplete="off"
+                  value={f.longitude}
+                  onChange={(e) => saisirCoordonnee('longitude', e.target.value)}
+                />
+              </label>
+            </div>
+            <p className="aide">
+              Remplies par la ville choisie. Pour un lieu absent de la liste, saisissez-les (nord et
+              est positifs ; sud et ouest négatifs), puis déduisez le fuseau.
+            </p>
+            {f.lieu === null && saisies && (
               <>
-                <div className="rangee rangee-2">
-                  <label>
-                    <span>Latitude (degrés décimaux)</span>
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      autoComplete="off"
-                      value={f.latitude}
-                      onChange={(e) =>
-                        changer({ latitude: e.target.value, fuseauDeduit: null, fuseauConfirme: false })
-                      }
-                    />
-                  </label>
-                  <label>
-                    <span>Longitude (degrés décimaux)</span>
-                    <input
-                      type="text"
-                      inputMode="decimal"
-                      autoComplete="off"
-                      value={f.longitude}
-                      onChange={(e) =>
-                        changer({ longitude: e.target.value, fuseauDeduit: null, fuseauConfirme: false })
-                      }
-                    />
-                  </label>
-                </div>
-                <p className="aide">Nord et est positifs ; sud et ouest négatifs.</p>
                 <div className="rangee-boutons">
                   <button type="button" className="secondaire" onClick={() => void deduireFuseau()}>
                     Déduire le fuseau
-                  </button>
-                  <button
-                    type="button"
-                    className="lien"
-                    onClick={() => changer({ manuel: false, fuseauDeduit: null, fuseauConfirme: false })}
-                  >
-                    Chercher une ville
                   </button>
                 </div>
                 <div aria-live="polite">
@@ -376,14 +380,12 @@ export function Saisie({ client, statut, initial = FORMULAIRE_VIDE, onResultat }
               <p>
                 Fuseau historique :{' '}
                 <span className="valeur">
-                  {(f.manuel ? f.fuseauDeduit : f.lieu?.timezone) ?? 'déduit du lieu'}
+                  {(f.lieu ? f.lieu.timezone : f.fuseauDeduit) ?? 'déduit du lieu'}
                 </span>
               </p>
               <p>
                 Coordonnées :{' '}
-                <span className="valeur">
-                  {f.manuel ? 'saisies ci-dessus' : (coordonnees ?? 'sélectionnez une ville')}
-                </span>
+                <span className="valeur">{origine}</span>
               </p>
               <p className="aide">
                 Le lieu sert à trouver le fuseau, donc l’instant. Pour un même instant, la position

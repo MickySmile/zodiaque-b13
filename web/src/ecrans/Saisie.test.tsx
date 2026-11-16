@@ -114,13 +114,50 @@ describe('écran de saisie (planche 6)', () => {
     expect(sunSign).not.toHaveBeenCalled()
   })
 
-  it('lieu : le fuseau et les coordonnées du lieu retenu sont montrés, avec l’attribution', async () => {
+  it('FR-01 : choisir une ville remplit la latitude, la longitude et le fuseau', async () => {
     monter()
     await remplir()
     const lieu = screen.getByRole('group', { name: 'Lieu de naissance' })
-    expect(within(lieu).getByText(/GeoNames/)).toHaveTextContent('CC BY 4.0')
+    expect(within(lieu).getByText(/^Lieux : GeoNames/)).toHaveTextContent('CC BY 4.0')
+    expect(within(lieu).getByLabelText('Latitude (degrés décimaux)')).toHaveValue('10.5')
+    expect(within(lieu).getByLabelText('Longitude (degrés décimaux)')).toHaveValue('20.25')
     expect(within(lieu).getByText(/Fuseau historique/)).toHaveTextContent('Europe/Paris')
-    expect(within(lieu).getByText(/Coordonnées/)).toHaveTextContent('10,5000°')
+    expect(within(lieu).getByText(/Coordonnées/)).toHaveTextContent('GeoNames, Villefictive')
+    // Le fuseau vient du registre des lieux : aucune confirmation n'est demandée.
+    expect(within(lieu).queryByRole('checkbox', { name: /Je confirme le fuseau/ })).toBeNull()
+  })
+
+  it('les champs de coordonnées sont toujours là, même avant toute recherche', () => {
+    monter()
+    expect(screen.getByLabelText('Latitude (degrés décimaux)')).toHaveValue('')
+    expect(screen.getByLabelText('Longitude (degrés décimaux)')).toHaveValue('')
+    expect(screen.getByLabelText('Ville de naissance')).toBeInTheDocument()
+  })
+
+  it('retoucher les coordonnées d’une ville : la ville est oubliée, le fuseau est à déduire', async () => {
+    const sunSign = vi.fn<Api['sunSign']>(async () => signeSolaire([{ signe: 'Leo' }]))
+    monter(clientEssai({ sunSign }))
+    const utilisateur = await remplir()
+    const latitude = screen.getByLabelText('Latitude (degrés décimaux)')
+    await utilisateur.clear(latitude)
+    await utilisateur.type(latitude, '11')
+    expect(screen.getByText(/Coordonnées/)).toHaveTextContent('saisies à la main')
+    expect(screen.getByRole('button', { name: /^Villefictive/ })).toHaveAttribute('aria-pressed', 'false')
+    await utilisateur.click(screen.getByRole('button', { name: 'Calculer mon signe solaire B13' }))
+    expect(sunSign).not.toHaveBeenCalled()
+    expect(await screen.findByRole('alert')).toHaveTextContent('le fuseau, à déduire des coordonnées')
+  })
+
+  it('choisir une autre ville remplace les coordonnées saisies à la main', async () => {
+    monter()
+    const utilisateur = userEvent.setup()
+    await utilisateur.type(screen.getByLabelText('Latitude (degrés décimaux)'), '1')
+    await utilisateur.type(screen.getByLabelText('Longitude (degrés décimaux)'), '2')
+    await utilisateur.type(screen.getByLabelText('Ville de naissance'), 'Villefictive')
+    await utilisateur.click(screen.getByRole('button', { name: 'Chercher ce lieu' }))
+    await utilisateur.click(await screen.findByRole('button', { name: /^Villefictive/ }))
+    expect(screen.getByLabelText('Latitude (degrés décimaux)')).toHaveValue('10.5')
+    expect(screen.getByLabelText('Longitude (degrés décimaux)')).toHaveValue('20.25')
   })
 
   it('lieu introuvable : aucun voisin proposé, la saisie des coordonnées est offerte', async () => {
@@ -154,7 +191,6 @@ describe('écran de saisie (planche 6)', () => {
     await utilisateur.selectOptions(screen.getByLabelText('Mois'), 'juin')
     await utilisateur.type(screen.getByLabelText('Jour'), '1')
     await utilisateur.click(screen.getByRole('checkbox', { name: 'Heure inconnue' }))
-    await utilisateur.click(screen.getByRole('button', { name: 'Saisir les coordonnées manuellement' }))
     await utilisateur.type(screen.getByLabelText('Latitude (degrés décimaux)'), '10,5')
     await utilisateur.type(screen.getByLabelText('Longitude (degrés décimaux)'), '20.25')
     await utilisateur.click(screen.getByRole('button', { name: 'Déduire le fuseau' }))
@@ -184,7 +220,6 @@ describe('écran de saisie (planche 6)', () => {
     }))
     monter(clientEssai({ timezoneAt }))
     const utilisateur = userEvent.setup()
-    await utilisateur.click(screen.getByRole('button', { name: 'Saisir les coordonnées manuellement' }))
     await utilisateur.type(screen.getByLabelText('Latitude (degrés décimaux)'), '0')
     await utilisateur.type(screen.getByLabelText('Longitude (degrés décimaux)'), '-30')
     await utilisateur.click(screen.getByRole('button', { name: 'Déduire le fuseau' }))
@@ -202,7 +237,6 @@ describe('écran de saisie (planche 6)', () => {
     }))
     monter(clientEssai({ timezoneAt }))
     const utilisateur = userEvent.setup()
-    await utilisateur.click(screen.getByRole('button', { name: 'Saisir les coordonnées manuellement' }))
     await utilisateur.type(screen.getByLabelText('Latitude (degrés décimaux)'), '10')
     await utilisateur.type(screen.getByLabelText('Longitude (degrés décimaux)'), '10')
     await utilisateur.click(screen.getByRole('button', { name: 'Déduire le fuseau' }))

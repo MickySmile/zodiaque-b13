@@ -15,8 +15,9 @@ export interface Formulaire {
   heureInconnue: boolean
   precision: number
   recherche: string
+  /** Ville choisie dans GeoNames ; `null` si les coordonnées sont saisies à la main. */
   lieu: Place | null
-  manuel: boolean
+  /** Coordonnées affichées : celles de la ville choisie, ou celles que la personne a tapées. */
   latitude: string
   longitude: string
   fuseauDeduit: string | null
@@ -33,7 +34,6 @@ export const FORMULAIRE_VIDE: Formulaire = {
   precision: 0,
   recherche: '',
   lieu: null,
-  manuel: false,
   latitude: '',
   longitude: '',
   fuseauDeduit: null,
@@ -76,21 +76,23 @@ export function construire(f: Formulaire): { saisie: BirthRequest } | { manques:
     manques.push('l’heure de naissance, ou la case « Heure inconnue »')
   }
   let lieu: { timezone: string; latitude_deg: number; longitude_deg: number } | null = null
-  if (f.manuel) {
-    const latitude = decimal(f.latitude)
-    const longitude = decimal(f.longitude)
-    if (latitude === null || longitude === null) manques.push('la latitude et la longitude')
-    else if (f.fuseauDeduit === null) manques.push('le fuseau, à déduire des coordonnées')
-    else if (!f.fuseauConfirme) manques.push('la confirmation du fuseau')
-    else lieu = { timezone: f.fuseauDeduit, latitude_deg: latitude, longitude_deg: longitude }
-  } else if (f.lieu === null) {
-    manques.push('le lieu de naissance')
-  } else {
+  if (f.lieu !== null) {
+    // Ville choisie : coordonnées et fuseau tels que GeoNames les donne, sans arrondi.
     lieu = {
       timezone: f.lieu.timezone,
       latitude_deg: f.lieu.latitude_deg,
       longitude_deg: f.lieu.longitude_deg,
     }
+  } else {
+    const latitude = decimal(f.latitude)
+    const longitude = decimal(f.longitude)
+    if (f.latitude.trim() === '' && f.longitude.trim() === '') {
+      manques.push('le lieu de naissance : une ville, ou sa latitude et sa longitude')
+    } else if (latitude === null || longitude === null) {
+      manques.push('la latitude et la longitude, en degrés décimaux')
+    } else if (f.fuseauDeduit === null) manques.push('le fuseau, à déduire des coordonnées')
+    else if (!f.fuseauConfirme) manques.push('la confirmation du fuseau')
+    else lieu = { timezone: f.fuseauDeduit, latitude_deg: latitude, longitude_deg: longitude }
   }
   if (manques.length > 0 || lieu === null) return { manques }
   const statut = f.heureInconnue ? 'unknown' : f.precision === 0 ? 'known' : 'uncertain'
@@ -119,8 +121,7 @@ export function resumer(f: Formulaire, saisie: BirthRequest): string {
       : `${saisie.time_local.slice(0, 5)}${
           saisie.time_status === 'uncertain' && precision ? ` (${precision.libelle})` : ''
         }`
-  const lieu = f.manuel
-    ? `${degres(saisie.latitude_deg, 4)}, ${degres(saisie.longitude_deg, 4)}`
-    : (f.lieu?.name ?? '')
+  const lieu =
+    f.lieu?.name ?? `${degres(saisie.latitude_deg, 4)}, ${degres(saisie.longitude_deg, 4)}`
   return `${Number(jour)} ${MOIS[Number(mois) - 1]} ${annee}, ${heure}, ${lieu} (${saisie.timezone})`
 }
